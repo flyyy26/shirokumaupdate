@@ -1,0 +1,564 @@
+/* ============================================
+   GALLERY LAYOUT
+   ============================================ */
+.gallery_layout {
+    width: 100%;
+    padding: 4vw 8vw 4vw 8vw;
+    min-height: 80vh;
+    text-align: center;
+    background: url(../images/blue-bg.png), linear-gradient(90deg, #01102D 0%, #294966 48.56%, #08203E 100%);
+    background-blend-mode: multiply;
+    background-size: contain;
+    background-position: center;
+    position:relative;
+    overflow-x:hidden;
+}
+
+/* ============================================
+   GALLERY HEADER
+   ============================================ */
+.gallery_header {
+    text-align: center;
+    margin-bottom: 2.5vw;
+}
+
+.gallery_header h1 {
+    font-size: 3.2vw;
+    font-family: techna, sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5vw;
+}
+
+.gallery_header p {
+    font-size: 1vw;
+    color: #e2e6eb;
+    max-width: 40vw;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ============================================
+   GALLERY CATEGORIES
+   ============================================ */
+.gallery_categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6vw;
+    margin-bottom: 2.5vw;
+}
+
+.gallery_cat_btn {
+    padding: 0.5vw 1.5vw;
+    background: #ffffff;
+    color: #475569;
+    border: 0.1vw solid #e2e8f0;
+    border-radius: 2vw;
+    font-size: 0.8vw;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.gallery_cat_btn:hover {
+    background: #f1f5f9;
+    border-color: #0a2c55;
+}
+
+.gallery_cat_btn.active {
+    background: linear-gradient(90deg, #B7904E 26.92%, #D2B780 48.56%, #B7904E 71.63%);
+    color: #ffffff;
+    border-color: #0a2c55;
+}
+
+/* ============================================
+   GALLERY GRID - 5 COLUMNS
+   ============================================ */
+.gallery_grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1vw;
+}
+
+/* ============================================
+   GALLERY ITEM - HANYA FOTO
+   ============================================ */
+.gallery_item {
+    background: #ffffff;
+    border-radius: 0.6vw;
+    overflow: hidden;
+    border: 0.1vw solid #08203E;
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: scale(0.95);
+    animation: galleryFadeIn 0.5s ease forwards;
+}
+
+
+
+/* Delay animasi per item */
+.gallery_item:nth-child(1) { animation-delay: 0.05s; }
+.gallery_item:nth-child(2) { animation-delay: 0.08s; }
+.gallery_item:nth-child(3) { animation-delay: 0.11s; }
+.gallery_item:nth-child(4) { animation-delay: 0.14s; }
+.gallery_item:nth-child(5) { animation-delay: 0.17s; }
+.gallery_item:nth-child(6) { animation-delay: 0.2s; }
+.gallery_item:nth-child(7) { animation-delay: 0.23s; }
+.gallery_item:nth-child(8) { animation-delay: 0.26s; }
+.gallery_item:nth-child(9) { animation-delay: 0.29s; }
+.gallery_item:nth-child(10) { animation-delay: 0.32s; }
+
+@keyframes galleryFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(0.5vw);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.gallery_item:hover {
+    transform: translateY(-0.3vw);
+    box-shadow: 0 0.5vw 1.5vw rgba(10, 44, 85, 0.15);
+}
+
+/* ============================================
+   GALLERY IMAGE - SQUARE ASPECT RATIO
+   ============================================ */
+.gallery_image {
+    position: relative;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f1f5f9;
+}
+
+.gallery_image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.gallery_item:hover .gallery_image img {
+    transform: scale(1.08);
+}
+
+/* ============================================
+   OVERLAY - ICON SAJA
+   ============================================ */
+.gallery_overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 44, 85, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.gallery_item:hover .gallery_overlay {
+    opacity: 1;
+}
+
+.gallery_overlay .overlay_icon {
+    font-size: 2.5vw;
+    color: #ffffff;
+    transform: scale(0.5);
+    transition: transform 0.4s ease;
+}
+
+.gallery_item:hover .gallery_overlay .overlay_icon {
+    transform: scale(1);
+}
+
+/* ============================================
+   NO RESULT
+   ============================================ */
+.gallery_no_result {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4vw 2vw;
+    text-align: center;
+    grid-column: 1 / -1;
+}
+
+.gallery_no_result .no_result_icon {
+    font-size: 4vw;
+    color: #b6c1d1;
+    margin-bottom: 1vw;
+}
+
+.gallery_no_result h3 {
+    font-size: 1.4vw;
+    color: #fcfdfd;
+    margin-bottom: 0.5vw;
+}
+
+.gallery_no_result p {
+    font-size: 0.9vw;
+    color: #c0cad8;
+}
+
+/* ============================================
+   LOAD MORE
+   ============================================ */
+.gallery_load_more {
+    text-align: center;
+    margin-top: 2.5vw;
+    display: none;
+}
+
+.gallery_load_more.visible {
+    display: block;
+}
+
+.load_more_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5vw;
+    padding: 0.7vw 2.5vw;
+    background: #ffffff;
+    color: #0a2c55;
+    border: 0.12vw solid #0a2c55;
+    border-radius: 2vw;
+    font-size: 0.9vw;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.load_more_btn:hover:not(:disabled) {
+    background: #0a2c55;
+    color: #ffffff;
+    transform: translateY(-0.1vw);
+    box-shadow: 0 0.3vw 0.8vw rgba(10, 44, 85, 0.2);
+}
+
+.load_more_btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.load_more_btn iconify-icon {
+    font-size: 1.2vw;
+}
+
+/* ============================================
+   LIGHTBOX MODAL - TANPA INFO
+   ============================================ */
+.lightbox_modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    touch-action: none; /* 🔥 MATIKAN GESTURE DEFAULT */
+}
+
+.lightbox_modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox_content {
+    position: relative;
+    max-width: 80vw;
+    max-height: 85vh;
+    background: transparent;
+    border-radius: 0.4vw;
+    overflow: hidden;
+    touch-action: none; /* 🔥 MATIKAN GESTURE DEFAULT */
+    cursor: grab;
+}
+
+.lightbox_content:active {
+    cursor: grabbing;
+}
+
+.lightbox_content img {
+    width: 100%;
+    height: auto;
+    max-height: 85vh;
+    object-fit: contain;
+    display: block;
+    pointer-events: none; /* 🔥 BIAR DRAG LANCAR */
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.lightbox_progress {
+    position: fixed;
+    bottom: 6vw;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5vw;
+    padding: 0.5vw 1.2vw;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 2vw;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.lightbox_modal.active .lightbox_progress {
+    opacity: 0.7;
+}
+
+.lightbox_progress .swipe_icon {
+    font-size: 1.2vw;
+    color: rgba(255, 255, 255, 0.6);
+    animation: swipePulse 1.5s ease-in-out infinite;
+}
+
+.lightbox_progress .swipe_text {
+    font-size: 0.8vw;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 300;
+}
+
+@keyframes swipePulse {
+    0%, 100% { transform: translateX(-0.3vw); opacity: 0.6; }
+    50% { transform: translateX(0.3vw); opacity: 1; }
+}
+
+/* 🔥 ANIMASI TRANSISI SWIPE */
+.lightbox_content .swipe-transition {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Lightbox Controls */
+.lightbox_close {
+    position: fixed;
+    top: 2vw;
+    right: 2vw;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #ffffff;
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+    font-size: 1.8vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox_close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.lightbox_prev,
+.lightbox_next {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #ffffff;
+    width: 3.5vw;
+    height: 3.5vw;
+    border-radius: 50%;
+    font-size: 1.8vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox_prev {
+    left: 2vw;
+}
+
+.lightbox_next {
+    right: 2vw;
+}
+
+.lightbox_prev:hover,
+.lightbox_next:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.lightbox_counter {
+    position: fixed;
+    bottom: 2vw;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9vw;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.4vw 1.2vw;
+    border-radius: 2vw;
+}
+
+/* ============================================
+   RESPONSIVE - MAX-WIDTH: 768px
+   ============================================ */
+@media (max-width: 768px) {
+    .gallery_layout {
+        padding: 4vw 4vw 8vw 4vw;
+    }
+
+    .gallery_header h1 {
+        font-size: 7vw;
+        margin-bottom: 1.5vw;
+    }
+
+    .gallery_header p {
+        font-size: 2.2vw;
+        max-width: 80vw;
+    }
+
+    .gallery_categories {
+        gap: 1.5vw;
+        margin-bottom: 4vw;
+    }
+
+    .gallery_cat_btn {
+        padding: 1.2vw 3.5vw;
+        border-radius: 4vw;
+        font-size: 2vw;
+        border-width: 0.2vw;
+    }
+
+    /* 5 columns -> 3 columns on mobile */
+    .gallery_grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2vw;
+    }
+
+    .gallery_item {
+        border-radius: 1.2vw;
+        border-width: 0.15vw;
+    }
+
+    .gallery_overlay .overlay_icon {
+        font-size: 5vw;
+    }
+
+    .gallery_no_result .no_result_icon {
+        font-size: 10vw;
+    }
+
+    .gallery_no_result h3 {
+        font-size: 3.5vw;
+    }
+
+    .gallery_no_result p {
+        font-size: 2.2vw;
+    }
+
+    .gallery_load_more {
+        margin-top: 5vw;
+    }
+
+    .load_more_btn {
+        padding: 1.5vw 5vw;
+        border-radius: 4vw;
+        font-size: 2.2vw;
+        border-width: 0.2vw;
+        gap: 1.2vw;
+    }
+
+    .load_more_btn iconify-icon {
+        font-size: 3vw;
+    }
+
+    /* Lightbox Mobile */
+    .lightbox_content {
+        max-width: 95vw;
+        max-height: 75vh;
+        border-radius: 1.5vw;
+    }
+
+    .lightbox_content img {
+        max-height: 75vh;
+    }
+
+    .lightbox_progress .swipe_icon {
+        font-size: 3vw;
+    }
+
+    .lightbox_progress .swipe_text {
+        font-size: 2vw;
+    }
+
+    .lightbox_progress {
+        bottom: 10vw;
+        padding: 1.5vw 3vw;
+        gap: 1.5vw;
+    }
+
+    .lightbox_close {
+        top: 3vw;
+        right: 3vw;
+        width: 8vw;
+        height: 8vw;
+        font-size: 4.5vw;
+    }
+
+    .lightbox_prev,
+    .lightbox_next {
+        width: 9vw;
+        height: 9vw;
+        font-size: 4.5vw;
+    }
+
+    .lightbox_prev {
+        left: 2vw;
+    }
+
+    .lightbox_next {
+        right: 2vw;
+    }
+
+    .lightbox_counter {
+        bottom: 4vw;
+        font-size: 2.2vw;
+        padding: 1vw 3vw;
+    }
+}
+
+/* ============================================
+   BREADCRUMB STYLING
+   ============================================ */
+.breadcrumb {
+    padding: 0.8vw 8vw;
+    background: #f8fafc;
+    font-size: 0.85vw;
+    color: #64748b;
+}
+
+.breadcrumb a {
+    color: #0a2c55;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        padding: 2vw 5vw;
+        font-size: 2vw;
+    }
+}

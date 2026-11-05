@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Sertifikat extends Model
+{
+    use HasFactory;
+    protected $fillable = [
+        'siswa_id',
+        'nama_sertifikat',
+        'tanggal_diterbitkan',
+        'tanggal_expired',
+        'dokumen_sertifikat',
+        'level_jlpt',
+        
+    ];
+}

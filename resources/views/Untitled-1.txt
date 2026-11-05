@@ -1,0 +1,18 @@
+Database Table :
+1. Users (Done)
+2. Siswa (Done)
+3. Guru (Done)
+4. siswa_kelas
+5. jadwal
+6. absensi
+7. evaluasi
+8. status terkini (kandidat, siswa, karantina)
+9. izin_keluar
+10. tagihan
+11. kk
+12. log
+13. keluarga
+14. Pendidikan
+15. riwayat_pekerjaan
+16. sertifikat
+17. dokumen

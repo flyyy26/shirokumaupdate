@@ -1,0 +1,281 @@
+.banner_page {
+    width:100%;
+    height:27vw;
+    background: url('../images/about_page.jpeg') no-repeat center center/cover #05112dcc;
+    background-blend-mode: multiply;
+    background-position: top center;
+    background-size: cover;
+    position:relative;
+}
+.banner_page img{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-position: center;
+    object-fit: cover;
+}
+
+.breadcrumb{
+    padding:.8vw 10vw;
+    width:100%;
+}
+.breadcrumb span{
+    color:#0a2c55;
+    font-size:.9vw;
+    font-weight:600;
+}
+.breadcrumb span a{
+    color:#01102da6;
+    font-size:.9vw;
+    font-weight:500;
+    text-decoration:none;
+}
+
+.about_page_layout {
+    width: 100%;
+    display:grid;
+    grid-template-columns: 43% 57%;
+}
+.about_page_img{
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+.about_page_img img{
+    width: 100%;
+    height: 100%;
+    object-position: center;
+    object-fit: cover;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.about_page_img_ceo img{
+    object-position:70% 30%;
+}
+.about_page_content{
+    padding: 3vw 4.8vw;
+    padding-right:10vw;
+    background-image:url(../images/program-bg.webp);
+    background-size: cover;
+    background-position:center;
+}
+.about_page_content_ceo{
+    padding:5vw 4.8vw;
+    padding-right:8vw;
+}
+.about_page_content h1{
+    font-size:3.3vw;
+    color:#0a2c55;
+    margin-bottom:1.2vw;
+    font-weight:500;
+    font-family:techna;
+}
+.about_page_content p{
+    font-size:.9vw;
+    color:#0a2c55;
+    margin-bottom:1.5vw;
+    line-height: 1.4;
+    font-weight:500;
+}
+.about_page_content_ceo p{
+    font-size:1vw;
+}
+.about_page_content_ceo h2{
+    font-size:4.2vw;
+    color:#0a2c55;
+    margin-bottom:1vw;
+    font-weight:500;
+    font-family:techna;
+}
+.about_page_content_ceo h5{
+    font-size:2vw;
+    color:#0a2c55;
+    margin-bottom:1.2vw;
+    font-weight:500;
+    font-family:techna;
+}
+.about_page_content_ceo span{
+    font-size:1.2vw;
+    color:#0a2c55;
+    margin-bottom:1.6vw;
+    font-weight:500;
+    display:block;
+}
+.about_page_content_ceo button{
+    background: linear-gradient(90deg, #01102D 0%, #294966 48.56%, #08203E 100%);
+    outline:none;
+    border:none;
+    font-size:.9vw;
+    font-weight:600;
+    padding:.6vw 1.4vw;
+    border-radius:100vw;
+    color:#ffffff;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    margin-top:1.5vw;
+}
+
+.visi_misi_container{
+    width: 100%;
+    background: url(../images/blue-bg.png), linear-gradient(90deg, #01102D 0%, #294966 48.56%, #08203E 100%);
+    background-blend-mode: multiply;
+    padding:4.8vw 17vw;
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    grid-gap:6vw;
+    position:relative;
+    overflow-x:hidden;
+}
+.visi_misi_box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:1.2vw;
+    text-align:center;
+    padding:0 2vw;
+}
+.visi_misi_box img{
+    width:7.5vw;
+}
+.visi_misi_box h4{
+    font-size:3.3vw;
+    font-weight:500;
+    color:#ffffff;
+    font-family:techna;
+}
+.visi_misi_box p{
+    font-size:.9vw;
+    font-weight:500;
+    color:white;
+    line-height:1.4;
+}
+.visi_misi_box ul{
+    text-align:start;
+    margin-left:1vw;
+}
+.visi_misi_box ul li{
+    font-size:.9vw;
+    font-weight:500;
+    color:white;
+    line-height:1.4;
+}
+.visi_misi_left{
+    position:absolute;
+    left:-.4vw;
+    top:50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    width:6vw;
+}
+.visi_misi_right{
+    position:absolute;
+    right:-.4vw;
+    top:50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    width:6vw;
+}
+
+@media (max-width:768px) {
+    .banner_page {
+        height: 47vw;
+    }
+    .breadcrumb {
+        padding: 2.5vw 4vw;
+    }
+    .breadcrumb span {
+        font-size: 3.5vw;
+    }
+    .breadcrumb span a {
+        font-size: 3.5vw;
+    }
+
+    .about_page_layout {
+        grid-template-columns: 100%;
+    }
+    .about_page_img {
+        height: 58vw;
+    }
+    .about_page_content {
+        padding: 8vw 4vw 8vw 4vw;
+        background-image: url(../images/program-bg.webp);
+        background-size: cover;
+        background-position: center center;
+        text-align:center;
+    }
+    .about_page_content h1 {
+        font-size: 6.3vw;
+        color: rgb(10, 44, 85);
+        margin-bottom: 4.2vw;
+        font-weight: 500;
+        font-family: techna;
+    }
+    .about_page_content p {
+        font-size: 3.5vw;
+        color: rgb(10, 44, 85);
+        margin-bottom: 3vw;
+        line-height: 1.4;
+        text-align: justify;
+        font-weight: 500;
+    }
+
+    .about_page_content_ceo span {
+        font-size: 3.5vw;
+        color: #0a2c55;
+        margin-bottom: 4.5vw;
+        font-weight: 500;
+        display: block;
+    }
+    .about_page_content_ceo h2 {
+        font-size: 10vw;
+        color: #0a2c55;
+        margin-bottom: 3vw;
+        font-weight: 500;
+        font-family: techna;
+    }
+    .about_page_content_ceo h5 {
+        font-size: 4.5vw;
+        color: #0a2c55;
+        margin-bottom: 4.2vw;
+        font-weight: 500;
+        font-family: techna;
+    }
+    .about_page_content_ceo button {
+        font-size: 4vw;
+        padding: 2.6vw 5.4vw;
+        margin-top: 5vw;
+    }
+
+    .visi_misi_container {
+        padding: 14vw 10vw;
+        grid-template-columns: 100%;
+        grid-gap: 11vw;
+    }
+    .visi_misi_box {
+        gap: 3.5vw;
+        padding: 0 0;
+    }
+    .visi_misi_box img {
+        width: 25.5vw;
+    }
+    .visi_misi_box h4 {
+        font-size: 8.3vw;
+    }
+    .visi_misi_box p {
+        font-size: 3.5vw;
+    }
+    .visi_misi_box ul li {
+        font-size: 3.5vw;
+    }
+    .visi_misi_right {
+        width: 12vw;
+    }
+    .visi_misi_left {
+        width: 12vw;
+    }
+}

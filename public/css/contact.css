@@ -1,0 +1,504 @@
+/* ============================================
+   CONTACT LAYOUT
+   ============================================ */
+.contact_layout {
+    width: 100%;
+    padding: 2vw 8vw;
+    padding-bottom:4vw;
+    display: grid;
+    grid-template-columns: 42% 58%;
+    gap: 2vw;
+    background: url(../images/blue-bg.png), linear-gradient(90deg, #01102D 0%, #294966 48.56%, #08203E 100%);
+    background-blend-mode: multiply;
+    background-size: contain;
+    background-position: center;
+    min-height: 80vh;
+    align-items: start;
+}
+
+/* ============================================
+   MAPS BOX
+   ============================================ */
+.maps_box {
+    width: 100%;
+    height: 38vw;
+    position: relative;
+    border: 0.15vw solid #E9CF82;
+    border-radius: 1.2vw;
+    overflow: hidden;
+    margin-bottom:1.8vw;
+    box-shadow: 0 0.8vw 2.5vw rgba(10, 44, 85, 0.15);
+}
+
+.maps_box iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.maps_box_camera{
+    width: 100%;
+    height: 20.7vw;
+    position: relative;
+    border: 0.15vw solid #E9CF82;
+    border-radius: 1.2vw;
+    overflow: hidden;
+    box-shadow: 0 0.8vw 2.5vw rgba(10, 44, 85, 0.15);
+}
+
+.maps_box_camera iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* ============================================
+   CONTACT FORM BOX
+   ============================================ */
+.contact_form_box {
+    padding: 2vw 3.5vw 3vw 3.5vw;
+    background-image:url(../images/program-bg.webp);
+    background-size: cover;
+    background-position:center;
+    backdrop-filter: blur(0.5vw);
+    border-radius: 1.2vw;
+    box-shadow: 0 0.5vw 2vw rgba(10, 44, 85, 0.1);
+}
+
+.contact_form_box h1 {
+    font-size: 3.2vw;
+    font-family: techna, sans-serif;
+    font-weight: 700;
+    color: #0a2c55;
+    margin-bottom: 0.3vw;
+    letter-spacing: -0.05vw;
+}
+
+.contact_subtitle {
+    font-size: 0.9vw;
+    color: #64748b;
+    margin-bottom: 1.8vw;
+    line-height: 1.6;
+}
+
+/* ============================================
+   FORM FIELDS
+   ============================================ */
+.form_field {
+    position: relative;
+    margin-bottom: 1.2vw;
+}
+
+.form_field label {
+    display: block;
+    font-size: 0.85vw;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.3vw;
+    letter-spacing: 0.02vw;
+}
+
+.form_field input,
+.form_field textarea {
+    width: 100%;
+    padding: 0.8vw 1vw 0.8vw 3vw;
+    font-size: 0.9vw;
+    color: #1e293b;
+    border: 0.12vw solid #e2e8f0;
+    border-radius: 0.7vw;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+    outline: none;
+    font-family: inherit;
+}
+
+.form_field input:focus,
+.form_field textarea:focus {
+    border-color: #0a2c55;
+    background: #ffffff;
+    box-shadow: 0 0 0 0.25vw rgba(10, 44, 85, 0.1);
+}
+
+.form_field textarea {
+    min-height: 7vw;
+    resize: vertical;
+    padding-top: 0.8vw;
+}
+
+.form_field .input-icon {
+    position: absolute;
+    left: 0.9vw;
+    bottom: 0.9vw;
+    font-size: 1.1vw;
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.form_field input:focus ~ .input-icon,
+.form_field textarea:focus ~ .input-icon {
+    opacity: 0.8;
+}
+
+/* ============================================
+   SUBMIT BUTTON
+   ============================================ */
+.btn_submit {
+    width: 100%;
+    padding: 0.9vw 1.5vw;
+    background: #0a2c55;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.7vw;
+    font-size: 1vw;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6vw;
+    transition: all 0.3s ease;
+    margin-top: 0.5vw;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn_submit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn_submit:hover::before {
+    left: 100%;
+}
+
+.btn_submit:hover {
+    background: #0f3a6b;
+    transform: translateY(-0.15vw);
+    box-shadow: 0 0.4vw 1.2vw rgba(10, 44, 85, 0.3);
+}
+
+.btn_submit:active {
+    transform: translateY(0);
+}
+
+.btn_submit .btn_icon {
+    width: 1.3vw;
+    height: 1.3vw;
+    transition: transform 0.3s ease;
+}
+
+.btn_submit:hover .btn_icon {
+    transform: translateX(0.3vw);
+}
+
+/* ============================================
+   CONTACT INFO WRAPPER
+   ============================================ */
+.contact_info_wrapper {
+    margin-top: 2vw;
+    padding-top: 1.8vw;
+    border-top: 0.12vw solid #e2e8f0;
+}
+
+/* ============================================
+   CONTACT ADDRESS
+   ============================================ */
+.contact_address {
+    display: flex;
+    gap: 1vw;
+    margin-bottom: 1.5vw;
+    padding: 1vw 1.2vw;
+    background: #f1f5f9;
+    border-radius: 0.7vw;
+    border-left: 0.3vw solid #0a2c55;
+}
+
+.address_icon {
+    font-size: 1.8vw;
+    flex-shrink: 0;
+}
+
+.contact_address h4 {
+    font-size: 0.95vw;
+    font-weight: 700;
+    color: #0a2c55;
+    margin-bottom: 0.2vw;
+}
+
+.contact_address p {
+    font-size: 0.8vw;
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* ============================================
+   CONTACT DETAIL
+   ============================================ */
+.contact_detail_layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1vw;
+    margin-bottom: 1.5vw;
+}
+
+.contact_detail {
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+    padding: 0.8vw 1vw;
+    background: #f8fafc;
+    border-radius: 0.7vw;
+    transition: all 0.3s ease;
+    border: 0.08vw solid #e2e8f0;
+}
+
+.contact_detail:hover {
+    background: #ffffff;
+    border-color: #0a2c55;
+    box-shadow: 0 0.2vw 0.8vw rgba(10, 44, 85, 0.08);
+}
+
+.detail_icon {
+    font-size: 1.4vw;
+    flex-shrink: 0;
+}
+
+.detail_label {
+    display: block;
+    font-size: 0.6vw;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05vw;
+}
+
+.contact_detail p {
+    font-size: 0.85vw;
+    font-weight: 600;
+    color: #0a2c55;
+    margin: 0;
+}
+
+/* ============================================
+   SOCIAL LINKS
+   ============================================ */
+.social_links {
+    display: flex;
+    gap: 0.8vw;
+    margin-top: 0.5vw;
+}
+
+.social_link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8vw;
+    height: 2.8vw;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #0a2c55;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social_link .social_icon {
+    font-size: 1.4vw;
+    transition: all 0.3s ease;
+}
+
+.social_link:hover {
+    background: #0a2c55;
+    color: #ffffff;
+    transform: translateY(-0.2vw);
+    box-shadow: 0 0.3vw 0.8vw rgba(10, 44, 85, 0.25);
+}
+
+.social_link:hover .social_icon {
+    transform: scale(1.1);
+}
+
+/* ============================================
+   RESPONSIVE - MAX-WIDTH: 768px
+   ============================================ */
+@media (max-width: 768px) {
+    .contact_layout {
+        padding: 4vw 5vw;
+        padding-bottom:8vw;
+        grid-template-columns: 1fr;
+        gap: 4vw;
+        background-attachment: scroll;
+        min-height: auto;
+    }
+
+    .maps_box {
+        height: 60vw;
+        border-radius: 2.5vw;
+        border-width: 0.3vw;
+        margin-bottom:4vw;
+    }
+
+    .maps_box_camera{
+        height: 45vw;
+        border-radius: 2.5vw;
+    }
+
+    .contact_form_box {
+        padding: 5vw 5vw 7vw 5vw;
+        border-radius: 2.5vw;
+    }
+
+    .contact_form_box h1 {
+        font-size: 7vw;
+        margin-bottom: 1vw;
+    }
+
+    .contact_subtitle {
+        font-size: 2.2vw;
+        margin-bottom: 4vw;
+    }
+
+    .form_field {
+        margin-bottom: 3vw;
+    }
+
+    .form_field label {
+        font-size: 2vw;
+        margin-bottom: 0.8vw;
+    }
+
+    .form_field input,
+    .form_field textarea {
+        padding: 2.2vw 2.5vw 2.2vw 7vw;
+        font-size: 2.2vw;
+        border-radius: 1.8vw;
+        border-width: 0.2vw;
+    }
+
+    .form_field textarea {
+        min-height: 18vw;
+        padding-top: 2.2vw;
+    }
+
+    .form_field .input-icon {
+        left: 2.2vw;
+        bottom: 2.2vw;
+        font-size: 2.8vw;
+    }
+
+    .btn_submit {
+        padding: 2.5vw 3vw;
+        border-radius: 1.8vw;
+        font-size: 2.5vw;
+        gap: 1.5vw;
+        margin-top: 1vw;
+    }
+
+    .btn_submit .btn_icon {
+        width: 3.2vw;
+        height: 3.2vw;
+    }
+
+    .contact_info_wrapper {
+        margin-top: 4vw;
+        padding-top: 4vw;
+        border-top-width: 0.2vw;
+    }
+
+    .contact_address {
+        gap: 2.5vw;
+        padding: 2.5vw 3vw;
+        border-radius: 1.8vw;
+        border-left-width: 0.6vw;
+        margin-bottom: 3vw;
+    }
+
+    .address_icon {
+        font-size: 4.5vw;
+    }
+
+    .contact_address h4 {
+        font-size: 2.4vw;
+    }
+
+    .contact_address p {
+        font-size: 2vw;
+        line-height: 1.7;
+    }
+
+    .contact_detail_layout {
+        grid-template-columns: 1fr;
+        gap: 2vw;
+        margin-bottom: 3vw;
+    }
+
+    .contact_detail {
+        gap: 2vw;
+        padding: 2vw 2.5vw;
+        border-radius: 1.8vw;
+        border-width: 0.15vw;
+    }
+
+    .detail_icon {
+        font-size: 3.5vw;
+    }
+
+    .detail_label {
+        font-size: 1.6vw;
+    }
+
+    .contact_detail p {
+        font-size: 2.2vw;
+    }
+
+    .social_links {
+        gap: 2vw;
+        justify-content: center;
+        margin-top: 1vw;
+    }
+
+    .social_link {
+        width: 7vw;
+        height: 7vw;
+    }
+
+    .social_link .social_icon {
+        font-size: 3.5vw;
+    }
+}
+
+/* ============================================
+   BREADCRUMB STYLING (sesuaikan dengan existing)
+   ============================================ */
+.breadcrumb {
+    padding: 0.8vw 8vw;
+    background: #f8fafc;
+    font-size: 0.85vw;
+    color: #64748b;
+}
+
+.breadcrumb a {
+    color: #0a2c55;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        padding: 2vw 5vw;
+        font-size: 2vw;
+    }
+}
