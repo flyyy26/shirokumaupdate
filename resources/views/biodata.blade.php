@@ -1,6 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
+
+@php
+    $tabOrder  = ['biodata', 'keluarga', 'pendidikan', 'jiko-piaru', 'pekerjaan', 'sertifikat', 'dokumen'];
+    $tabLabels = [
+        'biodata'    => 'Biodata',
+        'keluarga'   => 'Keluarga',
+        'pendidikan' => 'Pendidikan',
+        'jiko-piaru' => 'Jiko Piaru',
+        'pekerjaan'  => 'Pekerjaan',
+        'sertifikat' => 'Sertifikat',
+        'dokumen'    => 'Dokumen',
+    ];
+    $tabUnlocked = [];
+    $cumulativeOk = true;
+    foreach ($tabOrder as $key) {
+        $tabUnlocked[$key] = $cumulativeOk;
+        if ($cumulativeOk && empty($tabStatus[$key])) {
+            $cumulativeOk = false;
+        }
+    }
+
+
+    $err = function ($field) use ($errors) {
+        return $errors->has($field)
+            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+            : 'border-gray-600 focus:border-blue-500 focus:ring-blue-500';
+    };
+    $errMsg = function ($field) use ($errors) {
+        return $errors->has($field)
+            ? '<p class="text-xs text-red-400 mt-1">' . e($errors->first($field)) . '</p>'
+            : '';
+    };
+@endphp
+
+<div id="global-tooltip" class="fixed z-[9999] px-3 py-1.5 text-xs font-medium text-white bg-gray-900 border border-gray-600 rounded-lg shadow-xl opacity-0 pointer-events-none transition-opacity duration-200" style="display: none; white-space: nowrap;">
+    Isi data tab sebelumnya terlebih dahulu
+</div>
+
 <div class="container mx-auto">
     <!-- Header with Glassmorphism Effect -->
     <div class="mb-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded-0 md:rounded-2xl shadow-xl p-4 md:p-6 text-white">
@@ -229,27 +267,69 @@
         </div>
     </div>
 
+    @php
+        $tabOrder   = ['biodata', 'keluarga', 'pendidikan', 'jiko-piaru', 'pekerjaan', 'sertifikat', 'dokumen'];
+        $tabLabels  = [
+            'biodata'    => 'Biodata',
+            'keluarga'   => 'Keluarga',
+            'pendidikan' => 'Pendidikan',
+            'jiko-piaru' => 'Jiko Piaru',
+            'pekerjaan'  => 'Pekerjaan',
+            'sertifikat' => 'Sertifikat',
+            'dokumen'    => 'Dokumen',
+        ];
+
+        // Hitung tab mana saja yang boleh dibuka.
+        // Tab ke-N hanya boleh dibuka kalau semua tab sebelum N sudah terisi.
+        $tabUnlocked = [];
+        $cumulativeOk = true;
+        foreach ($tabOrder as $i => $key) {
+            $tabUnlocked[$key] = $cumulativeOk;          // tab ini terbuka kalau prefix-nya OK
+            if ($cumulativeOk && empty($tabStatus[$key])) {
+                $cumulativeOk = false;                    // tab setelahnya terkunci
+            }
+        }
+    @endphp
+
     <div class="w-screen md-wfull overflow-x-hidden block md:hidden mb-1 bg-[#111827]/50">
-        <div class="flex flex-nowrap items-center gap-2 md:gap-2 p-5 md:p-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory" id="tabContainer">
-            @foreach(['biodata' => 'Biodata', 'keluarga' => 'Keluarga', 'pendidikan' => 'Pendidikan', 'jiko-piaru' => 'Jiko Piaru', 'pekerjaan' => 'Pekerjaan', 'sertifikat' => 'Sertifikat', 'dokumen' => 'Dokumen'] as $key => $label)
-                <button 
-                    class="tab-btn snap-center flex-none px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap border border-transparent" 
-                    data-tab="{{ $key }}">
-                    {{ $label }}
+        <div class="flex flex-nowrap items-center gap-2 p-5 md:p-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory" id="tabContainer">
+            @foreach($tabOrder as $key)
+                @php $isUnlocked = $tabUnlocked[$key]; @endphp
+                <button
+                    class="tab-btn snap-center flex-none px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap border border-transparent 
+                        {{ $isUnlocked ? '' : 'opacity-50 cursor-not-allowed' }}"
+                    data-tab="{{ $key }}"
+                    data-unlocked="{{ $isUnlocked ? '1' : '0' }}"
+                    @if(!$isUnlocked) 
+                        disabled
+                    @endif>
+                    @if(!$isUnlocked)
+                        <iconify-icon icon="mdi:lock" width="14" height="14" class="mr-1 inline-block"></iconify-icon>
+                    @endif
+                    {{ $tabLabels[$key] }}
                 </button>
             @endforeach
-        </div>
     </div>
+</div>
 
     <!-- Modern Tabs Design -->
     <div class="bg-gray-800/50 backdrop-blur-sm w-full rounded-0 md:rounded-2xl shadow-xl border border-gray-700/50 overflow-hidden">
         <div class="border-b w-full border-gray-700/50 mb-10 bg-[#111827]/50 hidden md:block">
             <div class="flex flex-nowrap items-center gap-1 md:gap-2 p-2 md:p-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory" id="tabContainer">
-                @foreach(['biodata' => 'Biodata', 'keluarga' => 'Keluarga', 'pendidikan' => 'Pendidikan', 'jiko-piaru' => 'Jiko Piaru', 'pekerjaan' => 'Pekerjaan', 'sertifikat' => 'Sertifikat', 'dokumen' => 'Dokumen'] as $key => $label)
-                    <button 
-                        class="tab-btn snap-center flex-none px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap border border-transparent" 
-                        data-tab="{{ $key }}">
-                        {{ $label }}
+                @foreach($tabOrder as $key)
+                    @php $isUnlocked = $tabUnlocked[$key]; @endphp
+                    <button
+                        class="tab-btn snap-center flex-none px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 whitespace-nowrap border border-transparent 
+                            {{ $isUnlocked ? '' : 'opacity-50 cursor-not-allowed' }}"
+                        data-tab="{{ $key }}"
+                        data-unlocked="{{ $isUnlocked ? '1' : '0' }}"
+                        @if(!$isUnlocked) 
+                            disabled 
+                        @endif>
+                        @if(!$isUnlocked)
+                            <iconify-icon icon="mdi:lock" width="14" height="14" class="mr-1 inline-block"></iconify-icon>
+                        @endif
+                        {{ $tabLabels[$key] }}
                     </button>
                 @endforeach
             </div>
@@ -262,6 +342,7 @@
                 <form action="{{ route('biodata.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="active_tab" value="biodata">
 
                     @php
                         $status = $biodata->status_siswa_sebelumnya ?? '';
@@ -320,7 +401,6 @@
                                 'level_bahasa_jepang' => 'Level Bahasa Jepang',
                                 'periode_mulai' => 'Periode Mulai',
                                 'nik' => 'NIK',
-                                'nomor_paspor' => 'Nomor Paspor',
                                 'wilayah_alamat' => 'Wilayah Alamat',
                                 'golongan_darah' => 'Golongan Darah',
                                 'kondisi_mata_kiri' => 'Kondisi Mata Kiri',
@@ -340,11 +420,6 @@
                                 'rencana_lama_di_jepang' => 'Rencana Lama di Jepang',
                                 'ukuran_sepatu' => 'Ukuran Sepatu',
                                 'ukuran_pinggang' => 'Ukuran Pinggang',
-                            ];
-
-                            $dateFields = [
-                                'tanggal_pembuatan_paspor' => 'Tanggal Pembuatan Paspor',
-                                'tanggal_paspor_dikeluarkan' => 'Tanggal Paspor Dikeluarkan',
                             ];
 
                             $yesNoFields = [
@@ -373,11 +448,12 @@
                                     Informasi Pribadi
                                 </h3>
                                 @foreach($textFields as $name => $label)
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 items-center">
-                                    <div class="text-gray-400">{{ $label }}</div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 items-start">
+                                    <div class="text-gray-400 pt-2.5">{{ $label }} <span class="text-red-400">*</span></div>
                                     <div class="md:col-span-2">
                                         <input type="text" name="{{ $name }}" value="{{ old($name, $biodata->$name ?? '') }}"
-                                            class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                                            class="w-full bg-gray-800 border {{ $err($name) }} rounded-lg px-4 py-2.5 text-white focus:ring-1 transition">
+                                        {!! $errMsg($name) !!}
                                     </div>
                                 </div>
                                 @endforeach
@@ -465,23 +541,6 @@
 
                             <div class="bg-gray-700/30 rounded-xl p-6">
                                 <h3 class="text-white font-semibold mb-4 flex items-center gap-2">
-                                    <iconify-icon icon="mdi:calendar" width="20" height="20" class="text-blue-400"></iconify-icon>
-                                    Tanggal Penting
-                                </h3>
-                                @foreach($dateFields as $name => $label)
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 items-center">
-                                    <div class="text-gray-400">{{ $label }}</div>
-                                    <div class="md:col-span-2">
-                                        <input type="text" name="{{ $name }}" id="{{ $name }}"
-                                            class="flatpickr w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                                            value="{{ old($name, $biodata->$name ?? '') }}" placeholder="Pilih Tanggal">
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-
-                            <div class="bg-gray-700/30 rounded-xl p-6">
-                                <h3 class="text-white font-semibold mb-4 flex items-center gap-2">
                                     <iconify-icon icon="mdi:pen" width="20" height="20" class="text-blue-400"></iconify-icon>
                                     Deskripsi Diri
                                 </h3>
@@ -494,84 +553,6 @@
                                     </div>
                                 </div>
                                 @endforeach
-                            </div>
-
-                            <div class="bg-gray-700/30 rounded-xl p-6">
-                                <h3 class="text-white font-semibold mb-4 flex items-center gap-2">
-                                    <iconify-icon icon="mdi:upload" width="20" height="20" class="text-blue-400"></iconify-icon>
-                                    Upload Dokumen
-                                </h3>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div class="md:col-span-1">
-                                        <div class="flex items-start gap-2">
-                                            <div class="p-1.5 bg-blue-500/10 rounded-lg">
-                                                <iconify-icon icon="mdi:file-document" width="18" height="18" class="text-blue-400"></iconify-icon>
-                                            </div>
-                                            <div>
-                                                <span class="text-white text-sm font-medium">Dokumen Pendukung</span>
-                                                <p class="text-gray-500 text-xs mt-0.5">PDF, JPG, PNG (Max. 5MB)</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="md:col-span-2">
-                                        <div class="space-y-4">
-                                            <div class="relative">
-                                                <input type="file" name="dokumen" id="dokumen" class="hidden" accept=".pdf,.jpg,.jpeg,.png">
-                                                
-                                                <div class="flex flex-wrap items-center gap-3">
-                                                    <label for="dokumen" 
-                                                        class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-blue-500 rounded-lg px-4 py-2.5 text-white transition-all duration-200 cursor-pointer group">
-                                                        <iconify-icon icon="mdi:cloud-upload" width="20" height="20" class="text-gray-400 group-hover:text-blue-400"></iconify-icon>
-                                                        <span class="text-sm">Pilih File</span>
-                                                    </label>
-                                                    
-                                                    <div class="flex items-center gap-2 text-sm" id="file-info">
-                                                        <span class="text-gray-500" id="file-name-placeholder">Belum ada file dipilih</span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div id="file-name-container" class="hidden mt-3">
-                                                    <div class="flex items-center gap-3 bg-gray-800/50 border border-gray-600 rounded-lg p-3">
-                                                        <div class="p-2 bg-blue-500/10 rounded-lg">
-                                                            <iconify-icon icon="mdi:file" width="20" height="20" class="text-blue-400"></iconify-icon>
-                                                        </div>
-                                                        <div class="flex-1 min-w-0">
-                                                            <p class="text-white text-sm font-medium truncate" id="selected-file-name"></p>
-                                                            <p class="text-gray-500 text-xs" id="file-size"></p>
-                                                        </div>
-                                                        <button type="button" onclick="resetFileInput()" class="text-gray-500 hover:text-red-400 transition-colors">
-                                                            <iconify-icon icon="mdi:close" width="18" height="18"></iconify-icon>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            @if(!empty($biodata->dokumen))
-                                            <div class="border-t border-gray-600/30 pt-4">
-                                                <div class="flex items-center justify-between bg-gray-800/30 rounded-lg p-3">
-                                                    <div class="flex items-center gap-3">
-                                                        <div class="p-2 bg-green-500/10 rounded-lg">
-                                                            <iconify-icon icon="mdi:file-check" width="20" height="20" class="text-green-400"></iconify-icon>
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-white text-sm font-medium">Dokumen Tersimpan</p>
-                                                            <p class="text-gray-500 text-xs">{{ basename($biodata->dokumen) }}</p>
-                                                        </div>
-                                                    </div>
-                                                    <a href="{{ asset('storage/'.$biodata->dokumen) }}" 
-                                                    target="_blank" 
-                                                    class="inline-flex items-center gap-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 px-3 py-1.5 rounded-lg text-sm transition-colors">
-                                                        <iconify-icon icon="mdi:eye" width="16" height="16"></iconify-icon>
-                                                        Lihat
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -1139,8 +1120,8 @@
                                 <div>
                                     <h3 class="text-white font-semibold">Paspor</h3>
                                     <p class="text-gray-400 text-sm">Dokumen perjalanan</p>
-                                    @if($siswa->nomor_paspor)
-                                        <p class="text-xs text-red-400 mt-1">No: {{ $siswa->nomor_paspor }}</p>
+                                    @if($biodata->nomor_paspor)
+                                        <p class="text-xs text-red-400 mt-1">No: {{ $biodata->nomor_paspor }}</p>
                                     @endif
                                 </div>
                             </div>
@@ -1149,6 +1130,45 @@
                                 {{ $siswa->dokumen_paspor ? 'Ubah' : 'Unggah' }}
                             </button>
                         </div>
+
+                        {{-- ✅ Form isi data paspor (simpan ke biodata_siswa) --}}
+                        <form action="{{ route('biodata.update') }}" method="POST" class="mt-4 pt-4 border-t border-red-600/20 space-y-3">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="active_tab" value="dokumen">
+
+                            <div>
+                                <label class="block text-gray-400 text-sm mb-1">Nomor Paspor</label>
+                                <input type="text" name="nomor_paspor"
+                                    value="{{ old('nomor_paspor', $biodata->nomor_paspor) }}"
+                                    placeholder="Masukkan nomor paspor"
+                                    class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-gray-400 text-sm mb-1">Tanggal Pembuatan</label>
+                                    <input type="text" name="tanggal_pembuatan_paspor" id="tgl_pembuatan_paspor_biodata"
+                                        value="{{ old('tanggal_pembuatan_paspor', optional($biodata->tanggal_pembuatan_paspor)->format('Y-m-d')) }}"
+                                        placeholder="Pilih Tanggal"
+                                        class="flatpickr w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition cursor-pointer">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-400 text-sm mb-1">Tanggal Dikeluarkan</label>
+                                    <input type="text" name="tanggal_paspor_dikeluarkan" id="tgl_dikeluarkan_paspor_biodata"
+                                        value="{{ old('tanggal_paspor_dikeluarkan', optional($biodata->tanggal_paspor_dikeluarkan)->format('Y-m-d')) }}"
+                                        placeholder="Pilih Tanggal"
+                                        class="flatpickr w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition cursor-pointer">
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-lg">
+                                <iconify-icon icon="mdi:content-save" width="16" height="16"></iconify-icon>
+                                Simpan Data Paspor
+                            </button>
+                        </form>
+
                         @if($siswa->dokumen_paspor)
                             <div class="mt-4 pt-4 border-t border-red-600/20 flex justify-between items-center">
                                 <a href="{{ asset('storage/'.$siswa->dokumen_paspor) }}" target="_blank" class="text-red-400 hover:text-red-300 text-sm flex items-center gap-1">
@@ -2345,6 +2365,48 @@
         background-color: #2563EB;
         color: white;
     }
+        /* Tooltip untuk tab yang terkunci */
+        /* Tooltip untuk tab yang terkunci */
+    .tab-btn[data-unlocked="0"] {
+        position: relative;
+    }
+
+    /* Panah atas Tooltip */
+    .tab-btn[data-unlocked="0"]::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-8px);
+        border-width: 6px;
+        border-style: solid;
+        border-color: transparent transparent #1f2937 transparent;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        pointer-events: none;
+        z-index: 9999;
+    }
+
+    /* Munculkan tooltip saat di-hover */
+    .tab-btn[data-unlocked="0"]:hover::before,
+    .tab-btn[data-unlocked="0"]:hover::after {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* Animasi getar (shake) saat tab terkunci diklik */
+    .tab-btn.shake {
+        animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
     
     /* Scrollbar Styles */
     .scrollbar-hide::-webkit-scrollbar {
@@ -2899,18 +2961,15 @@
         
         tabs.forEach(t => {
             if(t.dataset.tab === tabName) {
-                // Gaya Aktif: Lebih rapi dengan background blue
                 t.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-500/20');
                 t.classList.remove('text-gray-400', 'hover:bg-gray-800');
 
-                // Fitur Responsive: Scroll tab ke tengah area pandang jika di mobile/tablet
                 t.scrollIntoView({
                     behavior: 'smooth',
                     block: 'nearest',
                     inline: 'center'
                 });
             } else {
-                // Gaya Tidak Aktif
                 t.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-500/20');
                 t.classList.add('text-gray-400', 'hover:bg-gray-800');
             }
@@ -2919,7 +2978,6 @@
         contents.forEach(c => {
             if(c.id === tabName) {
                 c.classList.remove('hidden');
-                // Animasi fade in sederhana
                 c.classList.add('animate-fade-in');
                 
                 if (tabName === 'jiko-piaru') {
@@ -3091,6 +3149,46 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 input.classList.remove('date-selected');
             }, 300);
+        }
+    });
+</script>
+
+<script>
+    flatpickr("#tgl_pembuatan_paspor_biodata", {
+        dateFormat: "Y-m-d",
+        altFormat: "j F Y",
+        altInput: true,
+        allowInput: true,
+        theme: "dark",
+        locale: {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
+                longhand: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
+            },
+            months: {
+                shorthand: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
+                longhand: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+            }
+        }
+    });
+
+    flatpickr("#tgl_dikeluarkan_paspor_biodata", {
+        dateFormat: "Y-m-d",
+        altFormat: "j F Y",
+        altInput: true,
+        allowInput: true,
+        theme: "dark",
+        locale: {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
+                longhand: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
+            },
+            months: {
+                shorthand: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
+                longhand: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+            }
         }
     });
 </script>
@@ -3425,14 +3523,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabContainer = document.getElementById('tabContainer');
 
     function activateTab(tabName) {
+        // ❗ Cegah masuk ke tab yang terkunci
+        const targetBtn = Array.from(tabs).find(t => t.dataset.tab === tabName);
+        if (targetBtn && targetBtn.dataset.unlocked === '0') {
+            if (typeof showNotification === 'function') {
+                showNotification('Lengkapi data tab sebelumnya terlebih dahulu.', 'error');
+            } else {
+                alert('Lengkapi data tab sebelumnya terlebih dahulu.');
+            }
+            return;
+        }
+
         tabs.forEach(t => {
             const isActive = t.dataset.tab === tabName;
-            
-            if(isActive) {
+
+            if (isActive) {
                 t.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-900/20');
                 t.classList.remove('text-gray-400', 'bg-transparent');
-                
-                // Auto-scroll ke tengah hanya di tampilan mobile (layar < 1024px)
+
                 if (window.innerWidth < 1024) {
                     t.scrollIntoView({
                         behavior: 'smooth',
@@ -3452,15 +3560,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
+        tab.addEventListener('click', (e) => {
+            if (tab.dataset.unlocked === '0') {
+                e.preventDefault();
+                if (typeof showNotification === 'function') {
+                    showNotification('Lengkapi data tab sebelumnya terlebih dahulu.', 'error');
+                } else {
+                    alert('Lengkapi data tab sebelumnya terlebih dahulu.');
+                }
+                return;
+            }
             activateTab(tab.dataset.tab);
         });
     });
 
-    // Ambil dari URL parameter, session, atau default ke biodata
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab');
-    const activeTab = tabParam || "{{ session('active_tab', 'biodata') }}";
+    
+    // Ambil dari URL, atau session Laravel
+    let activeTab = tabParam || "{{ session('active_tab') }}";
+    
+    // Fallback jika kosong
+    if (activeTab === "" || activeTab === "undefined" || !activeTab) {
+        activeTab = "biodata";
+    }
+
+    // ✅ WAJIB DIPANGGIL: Eksekusi fungsi untuk membuka tabnya
     activateTab(activeTab);
 });
 
@@ -3781,5 +3906,37 @@ $(document).ready(function() {
         theme: "dark"
     });
 });
+</script>
+
+<script>
+    const tooltip = document.getElementById('global-tooltip');
+    const lockedTabs = document.querySelectorAll('.tab-btn[data-unlocked="0"]');
+
+    lockedTabs.forEach(tab => {
+        // Saat mouse masuk, tampilkan tooltip di atas tombol
+        tab.addEventListener('mouseenter', function(e) {
+            const rect = this.getBoundingClientRect();
+            
+            // Hitung posisi tengah tombol
+            const left = rect.left + (rect.width / 2);
+            const top = rect.top - 35; // 35px di atas tombol
+
+            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${top}px`;
+            tooltip.style.transform = 'translateX(-50%)'; // Agar teks di tengah
+            tooltip.style.display = 'block';
+            
+            // Animasi fade in
+            setTimeout(() => tooltip.style.opacity = '1', 10);
+        });
+
+        // Saat mouse keluar, sembunyikan tooltip
+        tab.addEventListener('mouseleave', function() {
+            tooltip.style.opacity = '0';
+            setTimeout(() => {
+                if(tooltip.style.opacity === '0') tooltip.style.display = 'none';
+            }, 200);
+        });
+    });
 </script>
 @endsection
