@@ -159,11 +159,23 @@ Route::post('/login',[AuthController::class,'login']);
 // ============================================
 
 Route::middleware('auth')->group(function () {
+    
+    // ── GROUP ADMIN ──
     Route::middleware('role:admin')->group(function () {
         Route::resource('guru', GuruController::class);
         Route::resource('siswa', SiswaController::class);
         Route::post('/siswa/{siswa}/login-as', [AuthController::class, 'loginAsSiswa'])->name('siswa.login-as');
         Route::get('/siswa/{siswa}/cetak-cv', [SiswaController::class, 'printCv'])->name('siswa.print-cv');
+        
+        // ✅ TAMBAHAN: Rute Upload Dokumen oleh Admin
+        Route::post('/admin/siswa/{siswa}/upload-akte', [SiswaController::class, 'uploadAkte'])->name('admin.upload.akte');
+        Route::post('/admin/siswa/{siswa}/upload-ktp', [SiswaController::class, 'uploadKtp'])->name('admin.upload.ktp');
+        Route::post('/admin/siswa/{siswa}/upload-paspor', [SiswaController::class, 'uploadPaspor'])->name('admin.upload.paspor');
+        Route::post('/admin/siswa/{siswa}/upload-mcu', [SiswaController::class, 'uploadMcu'])->name('admin.upload.mcu');
+        Route::post('/admin/siswa/{siswa}/upload-coe', [SiswaController::class, 'uploadCoe'])->name('admin.upload.coe');
+        Route::post('/admin/siswa/{siswa}/upload-visa', [SiswaController::class, 'uploadVisa'])->name('admin.upload.visa');
+        Route::put('/admin/siswa/{siswa}/upload-paspor-biodata', [BiodataController::class, 'update'])->name('admin.upload.paspor.biodata'); // Jika paspor disimpan di biodata
+
         Route::resource('tagihan', AdminBillingController::class);
         Route::put('/tagihan/{tagihan}/verify', [AdminBillingController::class, 'verify'])
             ->name('tagihan.verify');
@@ -179,6 +191,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/admin/pertemuan/{pertemuan}', [PertemuanController::class, 'destroy'])->name('admin.pertemuan.destroy');
     });
 
+    // ── GROUP SISWA & UMUM ──
     Route::put('/update-my-biodata', [SiswaController::class, 'updateBiodataSiswa'])
         ->name('siswa.updateMyBiodata');
 
@@ -208,12 +221,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('sertifikat', SertifikatController::class)
     ->only(['store','update','destroy']);
 
+    // Rute Upload untuk Siswa (menggunakan Auth::user()->siswa)
     Route::post('/upload-akte', [SiswaController::class,'uploadAkte'])->name('upload.akte');
     Route::post('/upload-ktp', [SiswaController::class,'uploadKtp'])->name('upload.ktp');
     Route::post('/upload-paspor', [SiswaController::class,'uploadPaspor'])->name('upload.paspor');
     Route::post('/upload-mcu', [SiswaController::class,'uploadMcu'])->name('upload.mcu');
     Route::post('/upload-coe',[SiswaController::class,'uploadCoe'])->name('upload.coe');
     Route::post('/upload-visa',[SiswaController::class,'uploadVisa'])->name('upload.visa');
+
+    Route::put('/admin/siswa/{siswa}/update-paspor-biodata', [BiodataController::class, 'updatePasporAdmin'])->name('admin.biodata.update-paspor');
 
     Route::get('/kartu-keluarga', [KartuKeluargaController::class, 'index'])
         ->name('kartu-keluarga.index');
@@ -322,6 +338,9 @@ Route::middleware('auth')->group(function () {
         
     Route::get('/siswa/keberangkatan', [SiswaController::class, 'keberangkatan'])
     ->name('siswa.keberangkatan');
+
+    // Rute Show Siswa (Detail untuk Admin)
+    Route::get('/siswa/{siswa}', [App\Http\Controllers\SiswaController::class, 'show'])->name('siswa.show');
     
     Route::post('/job/update-urutan', [JobController::class, 'updateUrutan'])->name('job.update-urutan');
     Route::post('/job/batch-update-urutan', [JobController::class, 'batchUpdateUrutan'])->name('job.batch-update-urutan');

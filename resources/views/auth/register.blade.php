@@ -21,12 +21,72 @@
     align-items: center;
 }
 
+/* Wrapper Vertikal untuk Notifikasi & Card */
+.register_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+    z-index: 10;
+    position: relative;
+}
+
+/* ============================================
+   NOTIFIKASI LOGIN
+   ============================================ */
+.login_notice {
+    width: 100%;
+    background: rgba(183, 144, 78, 0.1);
+    border: 0.1vw solid rgba(183, 144, 78, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 1vw;
+    padding: 1vw 1.5vw;
+    margin-bottom: 1.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1vw;
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.2);
+}
+
+.login_notice_text {
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+    color: #D2B780;
+    font-size: 0.85vw;
+    font-weight: 500;
+}
+
+.login_notice_text iconify-icon {
+    font-size: 1.2vw;
+}
+
+.login_notice_btn {
+    background: #D2B780;
+    color: #1a1a1a;
+    padding: 0.6vw 1.2vw;
+    border-radius: 0.5vw;
+    font-size: 0.8vw;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.login_notice_btn:hover {
+    background: #B7904E;
+    transform: translateY(-0.1vw);
+    box-shadow: 0 0.3vw 0.8vw rgba(183, 144, 78, 0.3);
+}
+
 /* ============================================
    REGISTER CARD
    ============================================ */
 .register_card {
     width: 100%;
-    max-width: 520px;
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -338,77 +398,180 @@ select.form_input:disabled {
 }
 
 /* ============================================
-   PHOTO UPLOAD
+   PHOTO UPLOAD (MODERN)
    ============================================ */
 .photo_upload {
     display: flex;
-    align-items: center;
-    gap: 1.2vw;
-}
-
-.photo_preview {
-    width: 5vw;
-    height: 5vw;
-    background: rgba(255, 255, 255, 0.05);
-    border: 0.1vw solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.6vw;
-    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    gap: 1.5vw;
+    width: 100%;
+}
+
+.photo_dropzone {
+    width: 100%;
+    min-height: 15vw;
+    background: rgba(255, 255, 255, 0.02);
+    border: 0.15vw dashed rgba(255, 255, 255, 0.15);
+    border-radius: 1vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
     overflow: hidden;
 }
 
-.photo_preview iconify-icon {
+.photo_dropzone:hover {
+    background: rgba(183, 144, 78, 0.05);
+    border-color: #D2B780;
+}
+
+.photo_dropzone.has-image {
+    border-style: solid;
+    border-color: rgba(183, 144, 78, 0.3);
+    background: #000;
+}
+
+.photo_dropzone_icon {
+    color: #64748b;
+    margin-bottom: 0.8vw;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.photo_dropzone:hover .photo_dropzone_icon {
+    color: #D2B780;
+    transform: translateY(-0.2vw);
+}
+
+.photo_dropzone_text {
+    font-size: 0.9vw;
+    font-weight: 500;
+    color: #e2e6eb;
+    margin-bottom: 0.3vw;
+}
+
+.photo_dropzone_hint {
+    font-size: 0.75vw;
     color: #64748b;
 }
 
-.photo_preview img {
+.photo_preview_image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 1;
 }
 
-.photo_upload_info {
+.photo_preview_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
-    gap: .6vw;
-}
-
-.photo_upload_btn {
-    display: inline-flex;
     align-items: center;
-    gap: 0.4vw;
-    background: rgba(183, 144, 78, 0.15);
-    color: #D2B780;
-    padding: 0.4vw 1.2vw;
-    border-radius: 0.5vw;
-    font-size: 0.8vw;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+    backdrop-filter: blur(2px);
+}
+
+.photo_dropzone.has-image:hover .photo_preview_overlay {
+    opacity: 1;
+}
+
+.photo_preview_overlay iconify-icon {
+    color: #fff;
+    margin-bottom: 0.5vw;
+}
+
+.photo_preview_overlay span {
+    color: #fff;
+    font-size: 0.85vw;
     font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: fit-content;
 }
 
-.photo_upload_btn:hover {
-    background: rgba(183, 144, 78, 0.25);
+.photo_file_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.8vw 1.2vw;
+    border-radius: 0.6vw;
+    border: 0.1vw solid rgba(255, 255, 255, 0.05);
+    display: none;
 }
 
-.photo_hint {
-    font-size: 0.65vw;
+.photo_file_info.show {
+    display: flex;
+}
+
+.photo_file_details {
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+}
+
+.photo_file_details iconify-icon {
+    color: #D2B780;
+}
+
+.photo_file_name {
+    font-size: 0.8vw;
+    color: #e2e6eb;
+    margin: 0;
+    max-width: 15vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.photo_file_size {
+    font-size: 0.75vw;
     color: #94a3b8;
     margin: 0;
 }
 
-.photo_file_name {
-    font-size: 0.65vw;
-    color: #64748b;
-    margin: 0;
+.photo_remove_btn {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: none;
+    border-radius: 0.4vw;
+    padding: 0.4vw 0.8vw;
+    font-size: 0.75vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3vw;
+}
+
+.photo_remove_btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #ef4444;
 }
 
 .photo_error {
     color: #f87171;
-    font-size: 0.65vw;
+    font-size: 0.75vw;
+    margin-top: 0.5vw;
+    text-align: center;
+    display: none;
+}
+
+.photo_error.show {
+    display: block;
 }
 
 /* ============================================
@@ -516,14 +679,43 @@ select.form_input:disabled {
         min-height: 60vh;
     }
 
+    .register_wrapper {
+        max-width: 100%;
+    }
+
+    .login_notice {
+        border-radius: 2.5vw;
+        padding: 3vw 4vw;
+        margin-bottom: 4vw;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2.5vw;
+    }
+
+    .login_notice_text {
+        font-size: 3.5vw;
+        gap: 2vw;
+    }
+
+    .login_notice_text iconify-icon {
+        font-size: 5vw;
+    }
+
+    .login_notice_btn {
+        padding: 2vw 4vw;
+        border-radius: 2vw;
+        font-size: 3.5vw;
+        width: 100%;
+        text-align: center;
+    }
+
     .register_card {
         padding: 5vw;
         border-radius: 2.5vw;
-        max-width: 100%;
         max-height: 75vh;
     }
 
-        .register_header {
+    .register_header {
         gap: 3vw;
         margin-bottom: 6vw;
         padding-bottom: 4.5vw;
@@ -540,7 +732,7 @@ select.form_input:disabled {
 
     .register_header h2 {
         font-size: 4vw;
-        margin-bottom:1.6vw;
+        margin-bottom: 1.6vw;
     }
 
     .register_header p {
@@ -551,18 +743,18 @@ select.form_input:disabled {
         gap: 3vw;
     }
 
-        .form_section {
+    .form_section {
         gap: 6vw;
         padding-bottom: 5vw;
     }
 
-        .section_title {
+    .section_title {
         font-size: 4vw;
         gap: 2.5vw;
         margin-bottom: 2.5vw;
     }
 
-        .form_label {
+    .form_label {
         font-size: 3.5vw;
         gap: 1.8vw;
     }
@@ -575,7 +767,7 @@ select.form_input:disabled {
         font-size: 4vw;
     }
 
-       .form_input {
+    .form_input {
         font-size: 3.5vw;
         padding: 2.8vw 2.5vw 3.8vw 4vw;
         border-radius: 1.5vw;
@@ -602,51 +794,78 @@ select.form_input:disabled {
         border-radius: 1.5vw;
     }
 
-        .alamat_preview p {
+    .alamat_preview p {
         font-size: 3.5vw;
     }
 
     .photo_upload {
-        flex-direction: column;
-        align-items: flex-start;
+        gap: 4vw;
+    }
+    .photo_dropzone {
+        min-height: 40vw;
+        border-radius: 3vw;
+        border-width: 0.5vw;
+    }
+    .photo_dropzone_icon {
+        margin-bottom: 2vw;
+    }
+    .photo_dropzone_text {
+        font-size: 3.5vw;
+        margin-bottom: 1vw;
+    }
+    .photo_dropzone_hint {
+        font-size: 3vw;
+    }
+    .photo_preview_overlay iconify-icon {
+        margin-bottom: 1.5vw;
+    }
+    .photo_preview_overlay span {
+        font-size: 3.5vw;
+    }
+    .photo_file_info {
+        padding: 2.5vw 3.5vw;
+        border-radius: 2vw;
+        border-width: 0.2vw;
+    }
+    .photo_file_details {
         gap: 2vw;
     }
-    .photo_upload_info {
-    display: flex;
-    flex-direction: column;
-    gap: 2.2vw;
-}
-
-    .photo_preview {
-        width: 14vw;
-        height: 14vw;
+    .photo_file_details iconify-icon {
+        font-size: 5vw;
     }
-
-    .photo_upload_btn {
+    .photo_file_name {
         font-size: 3.5vw;
-        padding: 2.5vw 5vw;
-        border-radius: 2vw;
+        max-width: 40vw;
     }
-
-       .photo_hint, .photo_file_name, .photo_error {
-        font-size: 3.5vw;
+    .photo_file_size {
+        font-size: 3vw;
+    }
+    .photo_remove_btn {
+        padding: 1.5vw 2.5vw;
+        font-size: 3vw;
+        border-radius: 1.5vw;
+        gap: 1vw;
+    }
+    .photo_error {
+        font-size: 3vw;
+        margin-top: 2vw;
     }
 
     .form_terms {
         padding-top: 1vw;
     }
 
-        .terms_label {
+    .terms_label {
         font-size: 3.5vw;
         gap: 3vw;
     }
 
-        .terms_checkbox {
+    .terms_checkbox {
         width: 4.5vw;
         height: 4.5vw;
     }
 
-        .btn_submit {
+    .btn_submit {
         font-size: 4.4vw;
         padding: 2.8vw 5vw;
         border-radius: 2.5vw;
@@ -717,6 +936,9 @@ select.form_input:disabled {
         padding: 0.8vw 2.5vw;
     }
 }
+.hidden {
+    display: none !important;
+}
 </style>
 
 {{-- Register Layout --}}
@@ -724,313 +946,351 @@ select.form_input:disabled {
     <img src="{{ asset('images/visi-misi-left.svg') }}" alt="" class="visi_misi_left hidden_top_header">
     <img src="{{ asset('images/visi-misi-right.svg') }}" alt="" class="visi_misi_right hidden_top_header">
 
-    {{-- Register Card --}}
-    <div class="register_card">
-        {{-- Header --}}
-        <div class="register_header">
-            <div class="register_icon">
-                <iconify-icon icon="mdi:account-plus" width="28" height="28"></iconify-icon>
+    {{-- Wrapper Vertikal --}}
+    <div class="register_wrapper">
+        
+        {{-- Notifikasi Login --}}
+        <div class="login_notice">
+            <div class="login_notice_text">
+                <iconify-icon icon="mdi:information-outline" width="20" height="20"></iconify-icon>
+                <span>Sudah pernah mengisi form?</span>
             </div>
-            <div>
-                <h2>Form Pembuatan CV</h2>
-                <p>Lengkapi data diri Anda dengan benar</p>
+            <a href="{{ route('login') }}" class="login_notice_btn">
+                Login di Sini
+            </a>
+        </div>
+
+        {{-- Register Card --}}
+        <div class="register_card">
+            {{-- Header --}}
+            <div class="register_header">
+                <div class="register_icon">
+                    <iconify-icon icon="mdi:account-plus" width="28" height="28"></iconify-icon>
+                </div>
+                <div>
+                    <h2>Form Pembuatan CV</h2>
+                    <p>Lengkapi data diri Anda dengan benar</p>
+                </div>
             </div>
-        </div>
 
-        {{-- Flash Notification --}}
-        @if(session('success'))
-        <div class="alert_success">
-            <iconify-icon icon="mdi:check-circle" width="18" height="18"></iconify-icon>
-            <span>{{ session('success') }}</span>
-        </div>
-        @endif
-
-        @if(session('error'))
-        <div class="alert_error">
-            <iconify-icon icon="mdi:alert-circle" width="18" height="18"></iconify-icon>
-            <span>{{ session('error') }}</span>
-        </div>
-        @endif
-
-        @if($errors->any())
-        <div class="alert_error">
-            <div class="alert_error_header">
-                <iconify-icon icon="mdi:alert" width="18" height="18"></iconify-icon>
-                <span class="font-semibold">Terdapat {{ $errors->count() }} kesalahan:</span>
+            {{-- Flash Notification --}}
+            @if(session('success'))
+            <div class="alert_success">
+                <iconify-icon icon="mdi:check-circle" width="18" height="18"></iconify-icon>
+                <span>{{ session('success') }}</span>
             </div>
-            <ul class="alert_error_list">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+            @endif
 
-        {{-- Form --}}
-        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="register_form" id="registerForm">
-            @csrf
+            @if(session('error'))
+            <div class="alert_error">
+                <iconify-icon icon="mdi:alert-circle" width="18" height="18"></iconify-icon>
+                <span>{{ session('error') }}</span>
+            </div>
+            @endif
 
-            {{-- ============================================ --}}
-            {{-- INFORMASI PRIBADI --}}
-            {{-- ============================================ --}}
-            <div class="form_section">
-                <h3 class="section_title">
-                    <iconify-icon icon="mdi:account" width="20" height="20"></iconify-icon>
-                    Informasi Pribadi
-                </h3>
-
-                {{-- Nama Lengkap --}}
-                <div class="form_group">
-                    <label class="form_label">Nama Lengkap <span class="text_required">*</span></label>
-                    <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" 
-                           placeholder="Masukkan nama lengkap"
-                           class="form_input" required>
+            @if($errors->any())
+            <div class="alert_error">
+                <div class="alert_error_header">
+                    <iconify-icon icon="mdi:alert" width="18" height="18"></iconify-icon>
+                    <span class="font-semibold">Terdapat {{ $errors->count() }} kesalahan:</span>
                 </div>
+                <ul class="alert_error_list">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
-                {{-- Nama Lengkap (Katakana) --}}
-                <div class="form_group">
-                    <label class="form_label">Nama Lengkap (Katakana) <span class="text_required">*</span></label>
-                    <input type="text" name="nama_lengkap_katakana" value="{{ old('nama_lengkap_katakana') }}" 
-                           placeholder="Masukkan nama lengkap dalam Katakana"
-                           class="form_input" required>
-                </div>
+            {{-- Form --}}
+            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="register_form" id="registerForm">
+                @csrf
 
-                {{-- Nama Panggilan --}}
-                <div class="form_group">
-                    <label class="form_label">Nama Panggilan</label>
-                    <input type="text" name="nama_panggilan" value="{{ old('nama_panggilan') }}" 
-                           placeholder="Contoh: Andi"
-                           class="form_input">
-                </div>
+                {{-- ============================================ --}}
+                {{-- INFORMASI PRIBADI --}}
+                {{-- ============================================ --}}
+                <div class="form_section">
+                    <h3 class="section_title">
+                        <iconify-icon icon="mdi:account" width="20" height="20"></iconify-icon>
+                        Informasi Pribadi
+                    </h3>
 
-                {{-- Nama Panggilan (Katakana) --}}
-                <div class="form_group">
-                    <label class="form_label">Nama Panggilan (Katakana)</label>
-                    <input type="text" name="nama_panggilan_katakana" value="{{ old('nama_panggilan_katakana') }}" 
-                           placeholder="Contoh: アンディ"
-                           class="form_input">
-                </div>
-
-                {{-- Email --}}
-                <div class="form_group">
-                    <label class="form_label">Email <span class="text_required">*</span></label>
-                    <div class="input_group">
-                        <span class="input_icon">
-                            <iconify-icon icon="mdi:email-outline" width="18" height="18"></iconify-icon>
-                        </span>
-                        <input type="email" name="email" value="{{ old('email') }}" 
-                               placeholder="nama@email.com"
+                    {{-- Nama Lengkap --}}
+                    <div class="form_group">
+                        <label class="form_label">Nama Lengkap <span class="text_required">*</span></label>
+                        <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" 
+                               placeholder="Masukkan nama lengkap"
                                class="form_input" required>
                     </div>
-                </div>
 
-                {{-- No HP --}}
-                <div class="form_group">
-                    <label class="form_label">Nomor HP <span class="text_required">*</span></label>
-                    <div class="input_group">
-                        <span class="input_icon">
-                            <iconify-icon icon="mdi:phone-outline" width="18" height="18"></iconify-icon>
-                        </span>
-                        <input type="text" name="no_hp" id="no_hp" value="{{ old('no_hp') }}" 
-                               placeholder="Contoh: 081234567890"
+                    {{-- Nama Lengkap (Katakana) --}}
+                    <div class="form_group">
+                        <label class="form_label">Nama Lengkap (Katakana) <span class="text_required">*</span></label>
+                        <input type="text" name="nama_lengkap_katakana" value="{{ old('nama_lengkap_katakana') }}" 
+                               placeholder="Masukkan nama lengkap dalam Katakana"
                                class="form_input" required>
                     </div>
-                </div>
 
-                {{-- Password --}}
-                <div class="form_group">
-                    <label class="form_label">Password <span class="text_required">*</span></label>
-                    <div class="input_group">
-                        <span class="input_icon">
-                            <iconify-icon icon="mdi:lock-outline" width="18" height="18"></iconify-icon>
-                        </span>
-                        <input type="password" name="password" id="password"
-                               placeholder="Minimal 6 karakter"
-                               class="form_input" required minlength="6">
-                        <button type="button" onclick="togglePassword('password', 'password-icon')" 
-                                class="input_eye">
-                            <iconify-icon id="password-icon" icon="mdi:eye-outline" width="18" height="18"></iconify-icon>
-                        </button>
+                    {{-- Nama Panggilan --}}
+                    <div class="form_group">
+                        <label class="form_label">Nama Panggilan</label>
+                        <input type="text" name="nama_panggilan" value="{{ old('nama_panggilan') }}" 
+                               placeholder="Contoh: Andi"
+                               class="form_input">
                     </div>
-                    <div id="password-strength" class="password_strength hidden">
-                        <span>Kekuatan Password: <span id="strength-text"></span></span>
-                        <div class="strength_bars">
-                            <div id="strength-bar-1" class="strength_bar"></div>
-                            <div id="strength-bar-2" class="strength_bar"></div>
-                            <div id="strength-bar-3" class="strength_bar"></div>
+
+                    {{-- Nama Panggilan (Katakana) --}}
+                    <div class="form_group">
+                        <label class="form_label">Nama Panggilan (Katakana)</label>
+                        <input type="text" name="nama_panggilan_katakana" value="{{ old('nama_panggilan_katakana') }}" 
+                               placeholder="Contoh: アンディ"
+                               class="form_input">
+                    </div>
+
+                    {{-- Email --}}
+                    <div class="form_group">
+                        <label class="form_label">Email <span class="text_required">*</span></label>
+                        <div class="input_group">
+                            <span class="input_icon">
+                                <iconify-icon icon="mdi:email-outline" width="18" height="18"></iconify-icon>
+                            </span>
+                            <input type="email" name="email" value="{{ old('email') }}" 
+                                   placeholder="nama@email.com"
+                                   class="form_input" required>
+                        </div>
+                    </div>
+
+                    {{-- No HP --}}
+                    <div class="form_group">
+                        <label class="form_label">Nomor HP <span class="text_required">*</span></label>
+                        <div class="input_group">
+                            <span class="input_icon">
+                                <iconify-icon icon="mdi:phone-outline" width="18" height="18"></iconify-icon>
+                            </span>
+                            <input type="text" name="no_hp" id="no_hp" value="{{ old('no_hp') }}" 
+                                   placeholder="Contoh: 081234567890"
+                                   class="form_input" required>
+                        </div>
+                    </div>
+
+                    {{-- Password --}}
+                    <div class="form_group">
+                        <label class="form_label">Password <span class="text_required">*</span></label>
+                        <div class="input_group">
+                            <span class="input_icon">
+                                <iconify-icon icon="mdi:lock-outline" width="18" height="18"></iconify-icon>
+                            </span>
+                            <input type="password" name="password" id="password"
+                                   placeholder="Minimal 6 karakter"
+                                   class="form_input" required minlength="6">
+                            <button type="button" onclick="togglePassword('password', 'password-icon')" 
+                                    class="input_eye">
+                                <iconify-icon id="password-icon" icon="mdi:eye-outline" width="18" height="18"></iconify-icon>
+                            </button>
+                        </div>
+                        <div id="password-strength" class="password_strength hidden">
+                            <span>Kekuatan Password: <span id="strength-text"></span></span>
+                            <div class="strength_bars">
+                                <div id="strength-bar-1" class="strength_bar"></div>
+                                <div id="strength-bar-2" class="strength_bar"></div>
+                                <div id="strength-bar-3" class="strength_bar"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Konfirmasi Password --}}
+                    <div class="form_group">
+                        <label class="form_label">Konfirmasi Password <span class="text_required">*</span></label>
+                        <div class="input_group">
+                            <span class="input_icon">
+                                <iconify-icon icon="mdi:lock-outline" width="18" height="18"></iconify-icon>
+                            </span>
+                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                   placeholder="Ulangi password"
+                                   class="form_input" required>
+                            <button type="button" onclick="togglePassword('password_confirmation', 'confirm-icon')" 
+                                    class="input_eye">
+                                <iconify-icon id="confirm-icon" icon="mdi:eye-outline" width="18" height="18"></iconify-icon>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                {{-- Konfirmasi Password --}}
-                <div class="form_group">
-                    <label class="form_label">Konfirmasi Password <span class="text_required">*</span></label>
-                    <div class="input_group">
-                        <span class="input_icon">
-                            <iconify-icon icon="mdi:lock-outline" width="18" height="18"></iconify-icon>
-                        </span>
-                        <input type="password" name="password_confirmation" id="password_confirmation"
-                               placeholder="Ulangi password"
+                {{-- ============================================ --}}
+                {{-- DATA DIRI --}}
+                {{-- ============================================ --}}
+                <div class="form_section">
+                    <h3 class="section_title">
+                        <iconify-icon icon="mdi:card-account-details" width="20" height="20"></iconify-icon>
+                        Data Diri
+                    </h3>
+
+                    {{-- Tempat Lahir --}}
+                    <div class="form_group">
+                        <label class="form_label">Tempat Lahir <span class="text_required">*</span></label>
+                        <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}" 
+                               placeholder="Contoh: Jakarta"
                                class="form_input" required>
-                        <button type="button" onclick="togglePassword('password_confirmation', 'confirm-icon')" 
-                                class="input_eye">
-                            <iconify-icon id="confirm-icon" icon="mdi:eye-outline" width="18" height="18"></iconify-icon>
-                        </button>
+                    </div>
+
+                    {{-- Tanggal Lahir --}}
+                    <div class="form_group">
+                        <label class="form_label">Tanggal Lahir <span class="text_required">*</span></label>
+                        <input type="text" name="tanggal_lahir" id="tanggal_lahir" value="{{ old('tanggal_lahir') }}" 
+                               placeholder="DD/MM/YYYY"
+                               class="form_input flatpickr" required>
+                    </div>
+
+                    {{-- Jenis Kelamin --}}
+                    <div class="form_group">
+                        <label class="form_label">Jenis Kelamin <span class="text_required">*</span></label>
+                        <select name="jenis_kelamin" class="form_input" required>
+                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                        </select>
+                    </div>
+
+                    {{-- Agama --}}
+                    <div class="form_group">
+                        <label class="form_label">Agama <span class="text_required">*</span></label>
+                        <select name="agama" class="form_input" required>
+                            <option value="">Pilih Agama</option>
+                            <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                            <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                            <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                            <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                            <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                        </select>
                     </div>
                 </div>
-            </div>
 
-            {{-- ============================================ --}}
-            {{-- DATA DIRI --}}
-            {{-- ============================================ --}}
-            <div class="form_section">
-                <h3 class="section_title">
-                    <iconify-icon icon="mdi:card-account-details" width="20" height="20"></iconify-icon>
-                    Data Diri
-                </h3>
+                {{-- ============================================ --}}
+                {{-- ALAMAT --}}
+                {{-- ============================================ --}}
+                <div class="form_section">
+                    <h3 class="section_title">
+                        <iconify-icon icon="mdi:map-marker" width="20" height="20"></iconify-icon>
+                        Alamat Lengkap <span class="text_required">*</span>
+                    </h3>
 
-                {{-- Tempat Lahir --}}
-                <div class="form_group">
-                    <label class="form_label">Tempat Lahir <span class="text_required">*</span></label>
-                    <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}" 
-                           placeholder="Contoh: Jakarta"
-                           class="form_input" required>
-                </div>
-
-                {{-- Tanggal Lahir --}}
-                <div class="form_group">
-                    <label class="form_label">Tanggal Lahir <span class="text_required">*</span></label>
-                    <input type="text" name="tanggal_lahir" id="tanggal_lahir" value="{{ old('tanggal_lahir') }}" 
-                           placeholder="DD/MM/YYYY"
-                           class="form_input flatpickr" required>
-                </div>
-
-                {{-- Jenis Kelamin --}}
-                <div class="form_group">
-                    <label class="form_label">Jenis Kelamin <span class="text_required">*</span></label>
-                    <select name="jenis_kelamin" class="form_input" required>
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                        <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
-                    </select>
-                </div>
-
-                {{-- Agama --}}
-                <div class="form_group">
-                    <label class="form_label">Agama <span class="text_required">*</span></label>
-                    <select name="agama" class="form_input" required>
-                        <option value="">Pilih Agama</option>
-                        <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
-                        <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                        <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                        <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                        <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
-                        <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
-                    </select>
-                </div>
-            </div>
-
-            {{-- ============================================ --}}
-            {{-- ALAMAT --}}
-            {{-- ============================================ --}}
-            <div class="form_section">
-                <h3 class="section_title">
-                    <iconify-icon icon="mdi:map-marker" width="20" height="20"></iconify-icon>
-                    Alamat Lengkap <span class="text_required">*</span>
-                </h3>
-
-                {{-- Provinsi --}}
-                <div class="form_group">
-                    <label class="form_label">Provinsi <span class="text_required">*</span></label>
-                    <select id="provinsi" class="form_input" required>
-                        <option value="">Pilih Provinsi</option>
-                    </select>
-                </div>
-
-                {{-- Kabupaten --}}
-                <div class="form_group">
-                    <label class="form_label">Kabupaten/Kota <span class="text_required">*</span></label>
-                    <select id="kabupaten" class="form_input" disabled required>
-                        <option value="">Pilih Kabupaten/Kota</option>
-                    </select>
-                </div>
-
-                {{-- Kecamatan --}}
-                <div class="form_group">
-                    <label class="form_label">Kecamatan <span class="text_required">*</span></label>
-                    <select id="kecamatan" class="form_input" disabled required>
-                        <option value="">Pilih Kecamatan</option>
-                    </select>
-                </div>
-
-                {{-- Desa --}}
-                <div class="form_group">
-                    <label class="form_label">Desa/Kelurahan <span class="text_required">*</span></label>
-                    <select id="desa" class="form_input" disabled required>
-                        <option value="">Pilih Desa/Kelurahan</option>
-                    </select>
-                </div>
-
-                {{-- Preview Alamat --}}
-                <input type="hidden" name="alamat" id="alamat_lengkap" value="{{ old('alamat') }}">
-                <div class="alamat_preview">
-                    <p id="alamat_preview_text">
-                        {{ old('alamat') ?: 'Pilih provinsi, kabupaten, kecamatan, dan desa' }}
-                    </p>
-                </div>
-            </div>
-
-            {{-- ============================================ --}}
-            {{-- FOTO PROFIL --}}
-            {{-- ============================================ --}}
-            <div class="form_section">
-                <h3 class="section_title">
-                    <iconify-icon icon="mdi:camera" width="20" height="20"></iconify-icon>
-                    Foto Profil
-                </h3>
-
-                <div class="photo_upload">
-                    <div class="photo_preview" id="photoPreview">
-                        <iconify-icon icon="mdi:camera-plus" width="32" height="32"></iconify-icon>
+                    {{-- Provinsi --}}
+                    <div class="form_group">
+                        <label class="form_label">Provinsi <span class="text_required">*</span></label>
+                        <select id="provinsi" class="form_input" required>
+                            <option value="">Pilih Provinsi</option>
+                        </select>
                     </div>
-                    <div class="photo_upload_info">
+
+                    {{-- Kabupaten --}}
+                    <div class="form_group">
+                        <label class="form_label">Kabupaten/Kota <span class="text_required">*</span></label>
+                        <select id="kabupaten" class="form_input" disabled required>
+                            <option value="">Pilih Kabupaten/Kota</option>
+                        </select>
+                    </div>
+
+                    {{-- Kecamatan --}}
+                    <div class="form_group">
+                        <label class="form_label">Kecamatan <span class="text_required">*</span></label>
+                        <select id="kecamatan" class="form_input" disabled required>
+                            <option value="">Pilih Kecamatan</option>
+                        </select>
+                    </div>
+
+                    {{-- Desa --}}
+                    <div class="form_group">
+                        <label class="form_label">Desa/Kelurahan <span class="text_required">*</span></label>
+                        <select id="desa" class="form_input" disabled required>
+                            <option value="">Pilih Desa/Kelurahan</option>
+                        </select>
+                    </div>
+
+                    {{-- Preview Alamat --}}
+                    <input type="hidden" name="alamat" id="alamat_lengkap" value="{{ old('alamat') }}">
+                    <div class="alamat_preview">
+                        <p id="alamat_preview_text">
+                            {{ old('alamat') ?: 'Pilih provinsi, kabupaten, kecamatan, dan desa' }}
+                        </p>
+                    </div>
+                </div>
+
+                {{-- ============================================ --}}
+                {{-- FOTO PROFIL --}}
+                {{-- ============================================ --}}
+                <div class="form_section">
+                    <h3 class="section_title">
+                        <iconify-icon icon="mdi:camera" width="20" height="20"></iconify-icon>
+                        Foto Profil
+                    </h3>
+
+                    <div class="photo_upload">
+                        {{-- Input File Hidden --}}
                         <input type="file" name="foto" id="foto" accept="image/jpeg,image/png,image/jpg" class="hidden">
-                        <label for="foto" class="photo_upload_btn">
-                            <iconify-icon icon="mdi:cloud-upload" width="18" height="18"></iconify-icon>
-                            Pilih Foto
+                        
+                        {{-- Area Dropzone / Preview --}}
+                        <label for="foto" class="photo_dropzone" id="photoDropzone">
+                            <div class="photo_dropzone_content" id="dropzoneContent">
+                                <iconify-icon icon="mdi:cloud-upload-outline" width="48" height="48" class="photo_dropzone_icon"></iconify-icon>
+                                <p class="photo_dropzone_text">Klik untuk upload foto</p>
+                                <p class="photo_dropzone_hint">Format: JPG, PNG (Maks. 10MB)</p>
+                            </div>
+                            
+                            <img src="" id="photoPreviewImage" class="photo_preview_image hidden">
+                            
+                            <div class="photo_preview_overlay hidden" id="photoOverlay">
+                                <iconify-icon icon="mdi:camera-retake-outline" width="32" height="32"></iconify-icon>
+                                <span>Ganti Foto</span>
+                            </div>
                         </label>
-                        <p class="photo_hint">Format: JPG, PNG. Maksimal 10MB</p>
-                        <p id="file-name" class="photo_file_name">Tidak ada file dipilih</p>
-                        <div id="foto-error" class="photo_error hidden"></div>
+
+                        {{-- Info File --}}
+                        <div class="photo_file_info" id="fileInfo">
+                            <div class="photo_file_details">
+                                <iconify-icon icon="mdi:image-check" width="20" height="20"></iconify-icon>
+                                <div>
+                                    <p class="photo_file_name" id="fileNameDisplay">nama_file.jpg</p>
+                                    <p class="photo_file_size" id="fileSizeDisplay">0 KB</p>
+                                </div>
+                            </div>
+                            <button type="button" class="photo_remove_btn" onclick="removePhoto(event)">
+                                <iconify-icon icon="mdi:trash-can-outline" width="16" height="16"></iconify-icon>
+                                Hapus
+                            </button>
+                        </div>
+
+                        {{-- Error Message --}}
+                        <div id="foto-error" class="photo_error"></div>
                     </div>
                 </div>
+
+                {{-- ============================================ --}}
+                {{-- TERMS & SUBMIT --}}
+                {{-- ============================================ --}}
+                <div class="form_terms">
+                    <label class="terms_label">
+                        <input type="checkbox" name="terms" id="terms" class="terms_checkbox" required>
+                        <span>
+                            Saya menyetujui 
+                            <a href="{{ route('syarat-ketentuan') }}" class="terms_link">Syarat & Ketentuan</a> 
+                            dan 
+                            <a href="{{ route('kebijakan-privasi') }}" class="terms_link">Kebijakan Privasi</a>
+                        </span>
+                    </label>
+                </div>
+
+                {{-- Submit --}}
+                <button type="submit" id="submitBtn" class="btn_submit">
+                    <iconify-icon icon="mdi:account-plus" width="18" height="18"></iconify-icon>
+                    <span>Daftar Sekarang</span>
+                </button>
+            </form>
+
+            {{-- Login Link --}}
+            <div class="register_footer">
+                <p>Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a></p>
             </div>
-
-            {{-- ============================================ --}}
-            {{-- TERMS & SUBMIT --}}
-            {{-- ============================================ --}}
-            <div class="form_terms">
-                <label class="terms_label">
-                    <input type="checkbox" name="terms" id="terms" class="terms_checkbox" required>
-                    <span>
-                        Saya menyetujui 
-                        <a href="{{ route('syarat-ketentuan') }}" class="terms_link">Syarat & Ketentuan</a> 
-                        dan 
-                        <a href="{{ route('kebijakan-privasi') }}" class="terms_link">Kebijakan Privasi</a>
-                    </span>
-                </label>
-            </div>
-
-            {{-- Submit --}}
-            <button type="submit" id="submitBtn" class="btn_submit">
-                <iconify-icon icon="mdi:account-plus" width="18" height="18"></iconify-icon>
-                <span>Daftar Sekarang</span>
-            </button>
-        </form>
-
-        {{-- Login Link --}}
-        <div class="register_footer">
-            <p>Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a></p>
         </div>
     </div>
 </div>
@@ -1123,49 +1383,98 @@ document.getElementById('no_hp')?.addEventListener('input', function() {
 });
 
 // ============================================
-// FILE UPLOAD PREVIEW
+// PHOTO UPLOAD LOGIC (MODERN)
 // ============================================
-document.getElementById('foto')?.addEventListener('change', function(e) {
+const fileInput = document.getElementById('foto');
+const dropzone = document.getElementById('photoDropzone');
+const previewImage = document.getElementById('photoPreviewImage');
+const overlay = document.getElementById('photoOverlay');
+const dropzoneContent = document.getElementById('dropzoneContent');
+const fileInfo = document.getElementById('fileInfo');
+const fileNameDisplay = document.getElementById('fileNameDisplay');
+const fileSizeDisplay = document.getElementById('fileSizeDisplay');
+const errorContainer = document.getElementById('foto-error');
+
+// Format Ukuran File
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+fileInput?.addEventListener('change', function(e) {
     const file = e.target.files[0];
-    const fileName = document.getElementById('file-name');
-    const preview = document.getElementById('photoPreview');
-    const errorContainer = document.getElementById('foto-error');
     
+    // Reset Error
+    errorContainer.classList.remove('show');
+    errorContainer.textContent = '';
+
     if (file) {
-        errorContainer.classList.add('hidden');
-        errorContainer.textContent = '';
-        
+        // 1. Validasi Ukuran (Max 10MB)
         if (file.size > 10 * 1024 * 1024) {
-            errorContainer.textContent = 'Ukuran file maksimal 10MB';
-            errorContainer.classList.remove('hidden');
-            this.value = '';
-            fileName.textContent = 'Tidak ada file dipilih';
-            preview.innerHTML = '<iconify-icon icon="mdi:camera-plus" width="32" height="32"></iconify-icon>';
+            errorContainer.textContent = 'Ukuran file terlalu besar! Maksimal 10MB.';
+            errorContainer.classList.add('show');
+            this.value = ''; // Reset input
             return;
         }
-        
+
+        // 2. Validasi Tipe File
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
         if (!allowedTypes.includes(file.type)) {
-            errorContainer.textContent = 'Format file harus JPG atau PNG';
-            errorContainer.classList.remove('hidden');
-            this.value = '';
-            fileName.textContent = 'Tidak ada file dipilih';
-            preview.innerHTML = '<iconify-icon icon="mdi:camera-plus" width="32" height="32"></iconify-icon>';
+            errorContainer.textContent = 'Format file harus JPG atau PNG.';
+            errorContainer.classList.add('show');
+            this.value = ''; // Reset input
             return;
         }
-        
-        fileName.textContent = file.name;
-        
+
+        // 3. Tampilkan Preview & Info
         const reader = new FileReader();
         reader.onload = function(e) {
-            preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+            // Set Gambar
+            previewImage.src = e.target.result;
+            previewImage.classList.remove('hidden');
+            
+            // Sembunyikan Teks Awal
+            dropzoneContent.classList.add('hidden');
+            
+            // Tampilkan Overlay "Ganti Foto"
+            overlay.classList.remove('hidden');
+            
+            // Tandai dropzone sedang ada gambar
+            dropzone.classList.add('has-image');
+            
+            // Update Info File
+            fileNameDisplay.textContent = file.name;
+            fileSizeDisplay.textContent = formatBytes(file.size);
+            fileInfo.classList.add('show');
         };
         reader.readAsDataURL(file);
-    } else {
-        fileName.textContent = 'Tidak ada file dipilih';
-        preview.innerHTML = '<iconify-icon icon="mdi:camera-plus" width="32" height="32"></iconify-icon>';
     }
 });
+
+// Fungsi Hapus Foto
+function removePhoto(e) {
+    e.preventDefault(); // Mencegah form submit
+    e.stopPropagation(); // Mencegah trigger klik pada label
+
+    // Reset Input
+    fileInput.value = '';
+    
+    // Reset Tampilan
+    previewImage.src = '';
+    previewImage.classList.add('hidden');
+    overlay.classList.add('hidden');
+    dropzone.classList.remove('has-image');
+    dropzoneContent.classList.remove('hidden');
+    fileInfo.classList.remove('show');
+    
+    // Reset Error
+    errorContainer.classList.remove('show');
+    errorContainer.textContent = '';
+}
 
 // ============================================
 // WILAYAH API

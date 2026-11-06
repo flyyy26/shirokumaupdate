@@ -76,11 +76,6 @@ class SiswaController extends Controller
         return back()->with('success', 'Data siswa berhasil ditambahkan');
     }
 
-    public function show(Siswa $siswa)
-    {
-        return view('siswa.show', compact('siswa'));
-    }
-
     public function edit(Siswa $siswa)
     {
         return view('siswa.edit', compact('siswa'));
@@ -138,187 +133,6 @@ class SiswaController extends Controller
         );
         
         return back()->with('success', 'Data siswa dan user berhasil dihapus');
-    }
-
-    public function uploadAkte(Request $request)
-    {
-        $request->validate([
-            'dokumen_akte' => 'required|file|max:5120|mimes:pdf,jpg,jpeg,png'
-        ]);
-
-        $siswa = Auth::user()->siswa;
-
-        if ($request->hasFile('dokumen_akte')) {
-            if ($siswa->dokumen_akte) {
-                Storage::disk('public')->delete($siswa->dokumen_akte);
-            }
-            $path = $request->file('dokumen_akte')->store('dokumen', 'public');
-            $siswa->update(['dokumen_akte' => $path]);
-        }
-
-        LogHelper::log('Upload Akte', 'Mengupload dokumen akte');
-
-        return back()
-            ->with('success', 'Dokumen akte berhasil diupload.')
-            ->with('active_tab', 'dokumen');
-    }
-
-    public function uploadKtp(Request $request)
-    {
-        $request->validate([
-            'dokumen_ktp' => 'required|file|max:5120|mimes:pdf,jpg,jpeg,png'
-        ]);
-
-        $siswa = Auth::user()->siswa;
-
-        if ($siswa->dokumen_ktp) {
-            Storage::disk('public')->delete($siswa->dokumen_ktp);
-        }
-
-        $path = $request->file('dokumen_ktp')->store('dokumen', 'public');
-        $siswa->update(['dokumen_ktp' => $path]);
-
-        LogHelper::log('Upload KTP', 'Mengupload dokumen KTP');
-
-        return back()
-            ->with('success', 'Dokumen KTP berhasil diupload.')
-            ->with('active_tab', 'dokumen');
-    }
-
-    public function uploadPaspor(Request $request)
-    {
-        $siswa = Auth::user()->siswa;
-
-        $rules = [
-            'nomor_paspor' => 'required|string|max:50',
-            'tanggal_pembuatan_paspor' => 'required|date',
-            'tanggal_keluar_paspor' => 'required|date',
-            'dokumen_paspor' => 'nullable|file|max:5120|mimes:pdf,jpg,jpeg,png',
-        ];
-
-        if (!$siswa->dokumen_paspor) {
-            $rules['dokumen_paspor'] = 'required|file|max:5120|mimes:pdf,jpg,jpeg,png';
-        }
-
-        $request->validate($rules);
-
-        $data = [
-            'nomor_paspor' => $request->nomor_paspor,
-            'tanggal_pembuatan_paspor' => $request->tanggal_pembuatan_paspor,
-            'tanggal_keluar_paspor' => $request->tanggal_keluar_paspor,
-        ];
-
-        if ($request->hasFile('dokumen_paspor')) {
-            if ($siswa->dokumen_paspor) {
-                Storage::disk('public')->delete($siswa->dokumen_paspor);
-            }
-            $data['dokumen_paspor'] = $request->file('dokumen_paspor')->store('dokumen', 'public');
-        }
-
-        $siswa->update($data);
-
-        LogHelper::log('Upload Paspor', 'Mengupload dokumen paspor');
-
-        return back()
-            ->with('success', 'Dokumen Paspor berhasil diupload.')
-            ->with('active_tab', 'dokumen');
-    }
-
-    public function uploadMcu(Request $request)
-    {
-        $request->validate([
-            'mcu' => 'required|file|max:5120|mimes:pdf,jpg,jpeg,png'
-        ]);
-
-        $siswa = Auth::user()->siswa;
-
-        if ($request->hasFile('mcu')) {
-            if ($siswa->mcu && Storage::disk('public')->exists($siswa->mcu)) {
-                Storage::disk('public')->delete($siswa->mcu);
-            }
-            $path = $request->file('mcu')->store('mcu', 'public');
-            $siswa->update(['mcu' => $path]);
-        }
-
-        LogHelper::log('Upload MCU', 'Mengupload dokumen MCU');
-
-        return back()->with('success', 'Dokumen MCU berhasil diupload.');
-    }
-
-    public function uploadCoe(Request $request)
-    {
-        $siswa = Auth::user()->siswa;
-    
-        $rules = [
-            'nomor_coe' => 'required|string|max:100',
-            'tanggal_coe' => 'required|date',
-            'dokumen_coe' => 'nullable|file|max:5120|mimes:pdf,jpg,jpeg,png',
-        ];
-    
-        if (!$siswa->dokumen_coe) {
-            $rules['dokumen_coe'] = 'required|file|max:5120|mimes:pdf,jpg,jpeg,png';
-        }
-    
-        $request->validate($rules);
-    
-        $data = [
-            'nomor_coe' => $request->nomor_coe,
-            'tanggal_coe' => $request->tanggal_coe,
-        ];
-    
-        if ($request->hasFile('dokumen_coe')) {
-            if ($siswa->dokumen_coe && Storage::disk('public')->exists($siswa->dokumen_coe)) {
-                Storage::disk('public')->delete($siswa->dokumen_coe);
-            }
-            $data['dokumen_coe'] = $request->file('dokumen_coe')->store('dokumen', 'public');
-        }
-    
-        $siswa->update($data);
-    
-        LogHelper::log('Upload COE', 'Mengupload dokumen COE');
-    
-        return back()
-            ->with('success', 'Dokumen COE berhasil diupload.')
-            ->with('active_tab', 'dokumen');
-    }
-
-    public function uploadVisa(Request $request)
-    {
-        $siswa = Auth::user()->siswa;
-    
-        $rules = [
-            'nomor_visa' => 'required|string|max:100',
-            'tanggal_visa' => 'required|date',
-            'masa_berlaku_visa' => 'required|string|max:50',
-            'dokumen_visa' => 'nullable|file|max:5120|mimes:pdf,jpg,jpeg,png',
-        ];
-    
-        if (!$siswa->dokumen_visa) {
-            $rules['dokumen_visa'] = 'required|file|max:5120|mimes:pdf,jpg,jpeg,png';
-        }
-    
-        $request->validate($rules);
-    
-        $data = [
-            'nomor_visa' => $request->nomor_visa,
-            'tanggal_visa' => $request->tanggal_visa,
-            'masa_berlaku_visa' => $request->masa_berlaku_visa,
-        ];
-    
-        if ($request->hasFile('dokumen_visa')) {
-            if ($siswa->dokumen_visa && Storage::disk('public')->exists($siswa->dokumen_visa)) {
-                Storage::disk('public')->delete($siswa->dokumen_visa);
-            }
-            $data['dokumen_visa'] = $request->file('dokumen_visa')->store('dokumen', 'public');
-        }
-    
-        $siswa->update($data);
-    
-        LogHelper::log('Upload Visa', 'Mengupload dokumen Visa');
-    
-        return back()
-            ->with('success', 'Dokumen Visa berhasil diupload.')
-            ->with('active_tab', 'dokumen');
     }
 
     public function printCv(Siswa $siswa)
@@ -566,5 +380,223 @@ class SiswaController extends Controller
         }
     
         return back()->with('success', 'Biodata Anda berhasil diperbarui!');
+    }
+
+    public function show(Siswa $siswa)
+    {
+        // Load semua relasi untuk halaman detail
+        $siswa->load([
+            'biodata', 
+            'keluargas', 
+            'pendidikans', 
+            'riwayatPekerjaans', 
+            'sertifikats', 
+            'jikoPiaru',
+            'kartuKeluarga'
+        ]);
+        
+        if (class_exists('App\Helpers\LogHelper')) {
+            LogHelper::log('Lihat Detail Siswa', 'Admin melihat detail siswa: ' . $siswa->nama_lengkap);
+        }
+
+        return view('siswa.show', compact('siswa'));
+    }
+
+    public function uploadAkte(Request $request, ?Siswa $siswa = null)
+    {
+        $request->validate([
+            'dokumen_akte' => 'required|file|max:5120|mimes:pdf,jpg,jpeg,png'
+        ]);
+
+        // Jika admin mengakses lewat route admin (ada parameter $siswa), gunakan itu.
+        // Jika tidak, ambil dari user yang login (siswa).
+        $targetSiswa = $siswa ?? Auth::user()->siswa;
+
+        if (!$targetSiswa) {
+            return back()->with('error', 'Data siswa tidak ditemukan.');
+        }
+
+        if ($request->hasFile('dokumen_akte')) {
+            if ($targetSiswa->dokumen_akte) {
+                Storage::disk('public')->delete($targetSiswa->dokumen_akte);
+            }
+            $path = $request->file('dokumen_akte')->store('dokumen', 'public');
+            $targetSiswa->update(['dokumen_akte' => $path]);
+        }
+
+        LogHelper::log('Upload Akte', 'Mengupload dokumen akte untuk: ' . $targetSiswa->nama_lengkap);
+
+        return back()
+            ->with('success', 'Dokumen akte berhasil diupload.')
+            ->with('active_tab', 'admin-dokumen');
+    }
+
+    public function uploadKtp(Request $request, ?Siswa $siswa = null)
+    {
+        $request->validate([
+            'dokumen_ktp' => 'required|file|max:5120|mimes:pdf,jpg,jpeg,png'
+        ]);
+
+        $targetSiswa = $siswa ?? Auth::user()->siswa;
+
+        if ($targetSiswa->dokumen_ktp) {
+            Storage::disk('public')->delete($targetSiswa->dokumen_ktp);
+        }
+
+        $path = $request->file('dokumen_ktp')->store('dokumen', 'public');
+        $targetSiswa->update(['dokumen_ktp' => $path]);
+
+        LogHelper::log('Upload KTP', 'Mengupload dokumen KTP untuk: ' . $targetSiswa->nama_lengkap);
+
+        return back()
+            ->with('success', 'Dokumen KTP berhasil diupload.')
+            ->with('active_tab', 'admin-dokumen');
+    }
+
+    public function uploadPaspor(Request $request, ?Siswa $siswa = null)
+    {
+        $targetSiswa = $siswa ?? Auth::user()->siswa;
+
+        $rules = [
+            'nomor_paspor' => 'required|string|max:50',
+            'tanggal_pembuatan_paspor' => 'required|date',
+            'tanggal_keluar_paspor' => 'required|date',
+            'dokumen_paspor' => 'nullable|file|max:5120|mimes:pdf,jpg,jpeg,png',
+        ];
+
+        if (!$targetSiswa->dokumen_paspor) {
+            $rules['dokumen_paspor'] = 'required|file|max:5120|mimes:pdf,jpg,jpeg,png';
+        }
+
+        $request->validate($rules);
+
+        // 1. Update data paspor di tabel siswa
+        $dataSiswa = [
+            'nomor_paspor' => $request->nomor_paspor,
+            'tanggal_pembuatan_paspor' => $request->tanggal_pembuatan_paspor,
+            'tanggal_keluar_paspor' => $request->tanggal_keluar_paspor,
+        ];
+
+        if ($request->hasFile('dokumen_paspor')) {
+            if ($targetSiswa->dokumen_paspor) {
+                Storage::disk('public')->delete($targetSiswa->dokumen_paspor);
+            }
+            $dataSiswa['dokumen_paspor'] = $request->file('dokumen_paspor')->store('dokumen', 'public');
+        }
+
+        $targetSiswa->update($dataSiswa);
+
+        // 2. Update data paspor di tabel biodata_siswa (jika diakses oleh admin)
+        if ($siswa) {
+            $biodata = \App\Models\BiodataSiswa::firstOrCreate(['siswa_id' => $siswa->id]);
+            $biodata->update([
+                'nomor_paspor' => $request->nomor_paspor,
+                'tanggal_pembuatan_paspor' => $request->tanggal_pembuatan_paspor,
+                'tanggal_paspor_dikeluarkan' => $request->tanggal_keluar_paspor, // Sesuaikan nama field di DB biodata
+            ]);
+        }
+
+        LogHelper::log('Upload Paspor', 'Mengupload dan menyimpan data paspor untuk: ' . $targetSiswa->nama_lengkap);
+
+        return back()
+            ->with('success', 'Data dan File Paspor berhasil disimpan.')
+            ->with('active_tab', 'admin-dokumen');
+    }
+
+    public function uploadMcu(Request $request, ?Siswa $siswa = null)
+    {
+        $request->validate([
+            'mcu' => 'required|file|max:5120|mimes:pdf,jpg,jpeg,png'
+        ]);
+
+        $targetSiswa = $siswa ?? Auth::user()->siswa;
+
+        if ($request->hasFile('mcu')) {
+            if ($targetSiswa->mcu && Storage::disk('public')->exists($targetSiswa->mcu)) {
+                Storage::disk('public')->delete($targetSiswa->mcu);
+            }
+            $path = $request->file('mcu')->store('mcu', 'public');
+            $targetSiswa->update(['mcu' => $path]);
+        }
+
+        LogHelper::log('Upload MCU', 'Mengupload dokumen MCU untuk: ' . $targetSiswa->nama_lengkap);
+
+        return back()->with('success', 'Dokumen MCU berhasil diupload.');
+    }
+
+    public function uploadCoe(Request $request, ?Siswa $siswa = null)
+    {
+        $targetSiswa = $siswa ?? Auth::user()->siswa;
+    
+        $rules = [
+            'nomor_coe' => 'required|string|max:100',
+            'tanggal_coe' => 'required|date',
+            'dokumen_coe' => 'nullable|file|max:5120|mimes:pdf,jpg,jpeg,png',
+        ];
+    
+        if (!$targetSiswa->dokumen_coe) {
+            $rules['dokumen_coe'] = 'required|file|max:5120|mimes:pdf,jpg,jpeg,png';
+        }
+    
+        $request->validate($rules);
+    
+        $data = [
+            'nomor_coe' => $request->nomor_coe,
+            'tanggal_coe' => $request->tanggal_coe,
+        ];
+    
+        if ($request->hasFile('dokumen_coe')) {
+            if ($targetSiswa->dokumen_coe && Storage::disk('public')->exists($targetSiswa->dokumen_coe)) {
+                Storage::disk('public')->delete($targetSiswa->dokumen_coe);
+            }
+            $data['dokumen_coe'] = $request->file('dokumen_coe')->store('dokumen', 'public');
+        }
+    
+        $targetSiswa->update($data);
+    
+        LogHelper::log('Upload COE', 'Mengupload dokumen COE untuk: ' . $targetSiswa->nama_lengkap);
+    
+        return back()
+            ->with('success', 'Dokumen COE berhasil diupload.')
+            ->with('active_tab', 'admin-dokumen');
+    }
+
+    public function uploadVisa(Request $request, ?Siswa $siswa = null)
+    {
+        $targetSiswa = $siswa ?? Auth::user()->siswa;
+    
+        $rules = [
+            'nomor_visa' => 'required|string|max:100',
+            'tanggal_visa' => 'required|date',
+            'masa_berlaku_visa' => 'required|string|max:50',
+            'dokumen_visa' => 'nullable|file|max:5120|mimes:pdf,jpg,jpeg,png',
+        ];
+    
+        if (!$targetSiswa->dokumen_visa) {
+            $rules['dokumen_visa'] = 'required|file|max:5120|mimes:pdf,jpg,jpeg,png';
+        }
+    
+        $request->validate($rules);
+    
+        $data = [
+            'nomor_visa' => $request->nomor_visa,
+            'tanggal_visa' => $request->tanggal_visa,
+            'masa_berlaku_visa' => $request->masa_berlaku_visa,
+        ];
+    
+        if ($request->hasFile('dokumen_visa')) {
+            if ($targetSiswa->dokumen_visa && Storage::disk('public')->exists($targetSiswa->dokumen_visa)) {
+                Storage::disk('public')->delete($targetSiswa->dokumen_visa);
+            }
+            $data['dokumen_visa'] = $request->file('dokumen_visa')->store('dokumen', 'public');
+        }
+    
+        $targetSiswa->update($data);
+    
+        LogHelper::log('Upload Visa', 'Mengupload dokumen Visa untuk: ' . $targetSiswa->nama_lengkap);
+    
+        return back()
+            ->with('success', 'Dokumen Visa berhasil diupload.')
+            ->with('active_tab', 'admin-dokumen');
     }
 }

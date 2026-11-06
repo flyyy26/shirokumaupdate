@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    $tabOrder  = ['biodata', 'keluarga', 'pendidikan', 'jiko-piaru', 'pekerjaan', 'sertifikat', 'dokumen'];
+    $tabOrder  = ['biodata', 'keluarga', 'pendidikan', 'jiko-piaru', 'pekerjaan', 'sertifikat'];
     $tabLabels = [
         'biodata'    => 'Biodata',
         'keluarga'   => 'Keluarga',
@@ -11,7 +11,6 @@
         'jiko-piaru' => 'Jiko Piaru',
         'pekerjaan'  => 'Pekerjaan',
         'sertifikat' => 'Sertifikat',
-        'dokumen'    => 'Dokumen',
     ];
     $tabUnlocked = [];
     $cumulativeOk = true;
@@ -267,30 +266,6 @@
         </div>
     </div>
 
-    @php
-        $tabOrder   = ['biodata', 'keluarga', 'pendidikan', 'jiko-piaru', 'pekerjaan', 'sertifikat', 'dokumen'];
-        $tabLabels  = [
-            'biodata'    => 'Biodata',
-            'keluarga'   => 'Keluarga',
-            'pendidikan' => 'Pendidikan',
-            'jiko-piaru' => 'Jiko Piaru',
-            'pekerjaan'  => 'Pekerjaan',
-            'sertifikat' => 'Sertifikat',
-            'dokumen'    => 'Dokumen',
-        ];
-
-        // Hitung tab mana saja yang boleh dibuka.
-        // Tab ke-N hanya boleh dibuka kalau semua tab sebelum N sudah terisi.
-        $tabUnlocked = [];
-        $cumulativeOk = true;
-        foreach ($tabOrder as $i => $key) {
-            $tabUnlocked[$key] = $cumulativeOk;          // tab ini terbuka kalau prefix-nya OK
-            if ($cumulativeOk && empty($tabStatus[$key])) {
-                $cumulativeOk = false;                    // tab setelahnya terkunci
-            }
-        }
-    @endphp
-
     <div class="w-screen md-wfull overflow-x-hidden block md:hidden mb-1 bg-[#111827]/50">
         <div class="flex flex-nowrap items-center gap-2 p-5 md:p-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory" id="tabContainer">
             @foreach($tabOrder as $key)
@@ -309,8 +284,8 @@
                     {{ $tabLabels[$key] }}
                 </button>
             @endforeach
+        </div>
     </div>
-</div>
 
     <!-- Modern Tabs Design -->
     <div class="bg-gray-800/50 backdrop-blur-sm w-full rounded-0 md:rounded-2xl shadow-xl border border-gray-700/50 overflow-hidden">
@@ -974,231 +949,6 @@
                     @endforelse
                 </div>
             </div>
-
-            <!-- Tab Dokumen -->
-            <div class="tab-content hidden" id="dokumen">
-                <div class="sticky top-0 z-10 pb-4 -mt-5 border-b border-gray-700/50 mb-6 rounded-t-xl">
-                    <h2 class="text-xl font-semibold text-white flex items-center gap-2">
-                        <iconify-icon icon="mdi:folder" width="24" height="24" class="text-blue-400"></iconify-icon>
-                        Dokumen
-                    </h2>
-                    <div class="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-blue-400" id="saveProgressDokumen" style="width: 0%;"></div>
-                </div>
-            
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Akte Kelahiran -->
-                    <div class="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="p-3 bg-cyan-600/20 rounded-lg">
-                                    <iconify-icon icon="mdi:file-document" width="24" height="24" class="text-cyan-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-semibold">Akte Kelahiran</h3>
-                                    <p class="text-gray-400 text-sm">Dokumen kelahiran</p>
-                                </div>
-                            </div>
-                            <form action="{{ route('upload.akte') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="file" name="dokumen_akte" accept=".pdf,.jpg,.jpeg,.png" onchange="this.form.submit()" hidden id="akteUpload">
-                                <button type="button" onclick="document.getElementById('akteUpload').click()" class="bg-cyan-600/20 hover:bg-cyan-600/40 text-cyan-400 px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-all duration-300">
-                                    <iconify-icon icon="mdi:cloud-upload" width="18" height="18"></iconify-icon>
-                                    {{ $siswa->dokumen_akte ? 'Ubah' : 'Unggah' }}
-                                </button>
-                            </form>
-                        </div>
-                        @if($siswa->dokumen_akte)
-                            <div class="mt-4 pt-4 border-t border-gray-600/50">
-                                <a href="{{ asset('storage/'.$siswa->dokumen_akte) }}" target="_blank" class="text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-1">
-                                    <iconify-icon icon="mdi:file-pdf" width="16" height="16"></iconify-icon>
-                                    Lihat Dokumen
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-            
-                    <!-- KTP -->
-                    <div class="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="p-3 bg-cyan-600/20 rounded-lg">
-                                    <iconify-icon icon="mdi:card-account-details" width="24" height="24" class="text-cyan-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-semibold">KTP</h3>
-                                    <p class="text-gray-400 text-sm">Kartu Tanda Penduduk</p>
-                                </div>
-                            </div>
-                            <form action="{{ route('upload.ktp') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="file" name="dokumen_ktp" accept=".pdf,.jpg,.jpeg,.png" onchange="this.form.submit()" hidden id="ktpUpload">
-                                <button type="button" onclick="document.getElementById('ktpUpload').click()" class="bg-cyan-600/20 hover:bg-cyan-600/40 text-cyan-400 px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-all duration-300">
-                                    <iconify-icon icon="mdi:cloud-upload" width="18" height="18"></iconify-icon>
-                                    {{ $siswa->dokumen_ktp ? 'Ubah' : 'Unggah' }}
-                                </button>
-                            </form>
-                        </div>
-                        @if($siswa->dokumen_ktp)
-                            <div class="mt-4 pt-4 border-t border-gray-600/50">
-                                <a href="{{ asset('storage/'.$siswa->dokumen_ktp) }}" target="_blank" class="text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-1">
-                                    <iconify-icon icon="mdi:file-pdf" width="16" height="16"></iconify-icon>
-                                    Lihat Dokumen
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-            
-                    <!-- COE (Certificate of Eligibility) -->
-                    <div class="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="p-3 bg-purple-600/20 rounded-lg">
-                                    <iconify-icon icon="mdi:file-certificate" width="24" height="24" class="text-purple-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-semibold">COE</h3>
-                                    <p class="text-gray-400 text-sm">Certificate of Eligibility</p>
-                                    @if($siswa->nomor_coe)
-                                        <p class="text-xs text-purple-400 mt-1">No: {{ $siswa->nomor_coe }}</p>
-                                    @endif
-                                </div>
-                            </div>
-                            <button onclick="openCoeModal()" class="bg-purple-600/20 hover:bg-purple-600/40 text-purple-400 px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-all duration-300">
-                                <iconify-icon icon="mdi:cloud-upload" width="18" height="18"></iconify-icon>
-                                {{ $siswa->dokumen_coe ? 'Ubah' : 'Unggah' }}
-                            </button>
-                        </div>
-                        @if($siswa->dokumen_coe)
-                            <div class="mt-4 pt-4 border-t border-gray-600/50 flex justify-between items-center">
-                                <a href="{{ asset('storage/'.$siswa->dokumen_coe) }}" target="_blank" class="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1">
-                                    <iconify-icon icon="mdi:file-pdf" width="16" height="16"></iconify-icon>
-                                    Lihat Dokumen
-                                </a>
-                                <span class="text-xs text-gray-500">Berlaku: {{ $siswa->tanggal_coe ? Carbon\Carbon::parse($siswa->tanggal_coe)->format('d/m/Y') : '-' }}</span>
-                            </div>
-                        @endif
-                    </div>
-            
-                    <!-- VISA -->
-                    <div class="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="p-3 bg-indigo-600/20 rounded-lg">
-                                    <iconify-icon icon="mdi:passport" width="24" height="24" class="text-indigo-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-semibold">Visa Jepang</h3>
-                                    <p class="text-gray-400 text-sm">Visa kerja/pelatihan</p>
-                                    @if($siswa->nomor_visa)
-                                        <p class="text-xs text-indigo-400 mt-1">No: {{ $siswa->nomor_visa }}</p>
-                                    @endif
-                                </div>
-                            </div>
-                            <button onclick="openVisaModal()" class="bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-all duration-300">
-                                <iconify-icon icon="mdi:cloud-upload" width="18" height="18"></iconify-icon>
-                                {{ $siswa->dokumen_visa ? 'Ubah' : 'Unggah' }}
-                            </button>
-                        </div>
-                        @if($siswa->dokumen_visa)
-                            <div class="mt-4 pt-4 border-t border-gray-600/50 flex justify-between items-center">
-                                <a href="{{ asset('storage/'.$siswa->dokumen_visa) }}" target="_blank" class="text-indigo-400 hover:text-indigo-300 text-sm flex items-center gap-1">
-                                    <iconify-icon icon="mdi:file-pdf" width="16" height="16"></iconify-icon>
-                                    Lihat Dokumen
-                                </a>
-                                <span class="text-xs text-gray-500">Berlaku: {{ $siswa->tanggal_visa ? Carbon\Carbon::parse($siswa->tanggal_visa)->format('d/m/Y') : '-' }}</span>
-                            </div>
-                        @endif
-                    </div>
-            
-                    <!-- Paspor -->
-                    <div class="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="p-3 bg-red-600/20 rounded-lg">
-                                    <iconify-icon icon="mdi:passport" width="24" height="24" class="text-red-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-semibold">Paspor</h3>
-                                    <p class="text-gray-400 text-sm">Dokumen perjalanan</p>
-                                    @if($biodata->nomor_paspor)
-                                        <p class="text-xs text-red-400 mt-1">No: {{ $biodata->nomor_paspor }}</p>
-                                    @endif
-                                </div>
-                            </div>
-                            <button onclick="openPasporModal()" class="bg-red-600/20 hover:bg-red-600/40 text-red-400 px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-all duration-300">
-                                <iconify-icon icon="mdi:cloud-upload" width="18" height="18"></iconify-icon>
-                                {{ $siswa->dokumen_paspor ? 'Ubah' : 'Unggah' }}
-                            </button>
-                        </div>
-
-                        {{-- ✅ Form isi data paspor (simpan ke biodata_siswa) --}}
-                        <form action="{{ route('biodata.update') }}" method="POST" class="mt-4 pt-4 border-t border-red-600/20 space-y-3">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" name="active_tab" value="dokumen">
-
-                            <div>
-                                <label class="block text-gray-400 text-sm mb-1">Nomor Paspor</label>
-                                <input type="text" name="nomor_paspor"
-                                    value="{{ old('nomor_paspor', $biodata->nomor_paspor) }}"
-                                    placeholder="Masukkan nomor paspor"
-                                    class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-gray-400 text-sm mb-1">Tanggal Pembuatan</label>
-                                    <input type="text" name="tanggal_pembuatan_paspor" id="tgl_pembuatan_paspor_biodata"
-                                        value="{{ old('tanggal_pembuatan_paspor', optional($biodata->tanggal_pembuatan_paspor)->format('Y-m-d')) }}"
-                                        placeholder="Pilih Tanggal"
-                                        class="flatpickr w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition cursor-pointer">
-                                </div>
-                                <div>
-                                    <label class="block text-gray-400 text-sm mb-1">Tanggal Dikeluarkan</label>
-                                    <input type="text" name="tanggal_paspor_dikeluarkan" id="tgl_dikeluarkan_paspor_biodata"
-                                        value="{{ old('tanggal_paspor_dikeluarkan', optional($biodata->tanggal_paspor_dikeluarkan)->format('Y-m-d')) }}"
-                                        placeholder="Pilih Tanggal"
-                                        class="flatpickr w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition cursor-pointer">
-                                </div>
-                            </div>
-
-                            <button type="submit"
-                                    class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-lg">
-                                <iconify-icon icon="mdi:content-save" width="16" height="16"></iconify-icon>
-                                Simpan Data Paspor
-                            </button>
-                        </form>
-
-                        @if($siswa->dokumen_paspor)
-                            <div class="mt-4 pt-4 border-t border-red-600/20 flex justify-between items-center">
-                                <a href="{{ asset('storage/'.$siswa->dokumen_paspor) }}" target="_blank" class="text-red-400 hover:text-red-300 text-sm flex items-center gap-1">
-                                    <iconify-icon icon="mdi:file-pdf" width="16" height="16"></iconify-icon>
-                                    Lihat Dokumen
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-            
-                    <!-- Kartu Keluarga -->
-                    <div class="bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="p-3 bg-green-600/20 rounded-lg">
-                                    <iconify-icon icon="mdi:family-tree" width="24" height="24" class="text-green-400"></iconify-icon>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-semibold">Kartu Keluarga</h3>
-                                    <p class="text-gray-400 text-sm">Data keluarga</p>
-                                </div>
-                            </div>
-                            <a href="/kartu-keluarga" class="bg-green-600/20 hover:bg-green-600/40 text-green-400 px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-all duration-300">
-                                <iconify-icon icon="mdi:plus" width="18" height="18"></iconify-icon>
-                                Lengkapi
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -1287,76 +1037,6 @@
                 </div>
             </form>
         </div>
-    </div>
-</div>
-
-<!-- Paspor Modal -->
-<div id="pasporModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
-    <div class="bg-gray-800 w-full max-w-xl rounded-2xl shadow-2xl border border-gray-700">
-        <div class="p-6 border-b border-gray-700">
-            <h3 class="text-xl font-semibold text-white flex items-center gap-2">
-                <iconify-icon icon="mdi:passport" width="24" height="24" class="text-red-400"></iconify-icon>
-                Unggah Dokumen Paspor
-            </h3>
-        </div>
-        <form action="{{ route('upload.paspor') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
-                <div>
-                    <label class="block text-gray-400 text-sm mb-2">Nomor Paspor</label>
-                    <input type="text" name="nomor_paspor"
-                        value="{{ old('nomor_paspor', $siswa->nomor_paspor) }}"
-                        placeholder="Masukkan nomor paspor"
-                        class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
-                </div>
-                <div>
-                    <label class="block text-gray-400 text-sm mb-2">Tanggal Pembuatan</label>
-                    <input type="date" name="tanggal_pembuatan_paspor"
-                        value="{{ old('tanggal_pembuatan_paspor', $siswa->tanggal_pembuatan_paspor ? $siswa->tanggal_pembuatan_paspor->format('Y-m-d') : '') }}"
-                        class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
-                </div>
-                <div>
-                    <label class="block text-gray-400 text-sm mb-2">Tanggal Keluar</label>
-                    <input type="date" name="tanggal_keluar_paspor"
-                        value="{{ old('tanggal_keluar_paspor', $siswa->tanggal_keluar_paspor ? $siswa->tanggal_keluar_paspor->format('Y-m-d') : '') }}"
-                        class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
-                </div>
-                <div>
-                    <label class="block text-gray-400 text-sm mb-2">File Paspor</label>
-
-                    <input type="file" name="dokumen_paspor" id="dokumen_paspor"
-                        class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-white">
-
-                    <p class="text-xs text-gray-500 mt-1">Maksimal 5MB (PDF, JPG, PNG)</p>
-
-                    <div class="mt-3">
-                        @if(!empty($siswa->dokumen_paspor))
-                            <a href="{{ asset('storage/'.$siswa->dokumen_paspor) }}" target="_blank">
-                                <img 
-                                    id="preview_paspor"
-                                    src="{{ asset('storage/'.$siswa->dokumen_paspor) }}"
-                                    class="h-24 rounded-lg border border-gray-600 cursor-pointer hover:opacity-80 transition"
-                                >
-                            </a>
-                        @else
-                            <img 
-                                id="preview_paspor"
-                                class="h-24 rounded-lg border border-gray-600 hidden"
-                            >
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="p-6 border-t border-gray-700 flex justify-end gap-3">
-                <button type="button" onclick="closePasporModal()" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-2.5 rounded-lg transition-all duration-300">
-                    Batal
-                </button>
-                <button type="submit" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-2.5 rounded-lg flex items-center gap-2 transition-all duration-300">
-                    <iconify-icon icon="mdi:content-save" width="18" height="18"></iconify-icon>
-                    Simpan
-                </button>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -2192,127 +1872,6 @@
     </div>
 </div>
 
-<div id="modalCoe" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50 backdrop-blur-md">
-    <div class="bg-gradient-to-br from-gray-800 to-gray-900 w-full max-w-md rounded-2xl border border-gray-700/50 shadow-2xl">
-        <div class="flex justify-between items-center p-6 border-b border-gray-700/50">
-            <div class="flex items-center gap-3">
-                <div class="p-2 bg-purple-600/20 rounded-lg">
-                    <iconify-icon icon="mdi:file-certificate" width="24" height="24" class="text-purple-400"></iconify-icon>
-                </div>
-                <h3 class="text-xl font-bold text-white">Upload COE</h3>
-            </div>
-            <button onclick="closeCoeModal()" class="text-gray-400 hover:text-white p-2 hover:bg-gray-700 rounded-lg transition-colors">
-                <iconify-icon icon="mdi:close" width="20" height="20"></iconify-icon>
-            </button>
-        </div>
-
-        <form action="{{ route('upload.coe') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
-            @csrf
-            
-            <!-- Nomor COE -->
-            <div class="space-y-2">
-                <label class="block text-gray-300 text-sm font-medium">Nomor COE</label>
-                <input type="text" name="nomor_coe" value="{{ $siswa->nomor_coe ?? '' }}" 
-                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
-            </div>
-
-            <!-- Tanggal COE -->
-            <div class="space-y-2">
-                <label class="block text-gray-300 text-sm font-medium">Tanggal COE</label>
-                <input type="date" name="tanggal_coe" value="{{ $siswa->tanggal_coe ?? '' }}" 
-                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
-            </div>
-
-            <!-- File COE -->
-            <div class="space-y-2">
-                <label class="block text-gray-300 text-sm font-medium">File COE (PDF/Image)</label>
-                <input type="file" name="dokumen_coe" accept=".pdf,.jpg,.jpeg,.png" required
-                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-purple-600 file:text-white hover:file:bg-purple-700">
-            </div>
-
-            <!-- Submit Button -->
-            <div class="flex justify-end gap-3 pt-4">
-                <button type="button" onclick="closeCoeModal()"
-                        class="px-6 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300 text-sm font-medium">
-                    Batal
-                </button>
-                <button type="submit"
-                        class="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg transition-all duration-300 text-sm font-medium flex items-center gap-2">
-                    <iconify-icon icon="mdi:cloud-upload" width="16" height="16"></iconify-icon>
-                    Upload
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Modal Upload Visa -->
-<div id="modalVisa" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50 backdrop-blur-md">
-    <div class="bg-gradient-to-br from-gray-800 to-gray-900 w-full max-w-md rounded-2xl border border-gray-700/50 shadow-2xl">
-        <div class="flex justify-between items-center p-6 py-2 border-b border-gray-700/50">
-            <div class="flex items-center gap-3">
-                <div class="p-2 bg-indigo-600/20 rounded-lg">
-                    <iconify-icon icon="mdi:passport" width="24" height="24" class="text-indigo-400"></iconify-icon>
-                </div>
-                <h3 class="text-xl font-bold text-white">Upload Visa</h3>
-            </div>
-            <button onclick="closeVisaModal()" class="text-gray-400 hover:text-white p-2 hover:bg-gray-700 rounded-lg transition-colors">
-                <iconify-icon icon="mdi:close" width="20" height="20"></iconify-icon>
-            </button>
-        </div>
-
-        <form action="{{ route('upload.visa') }}" method="POST" enctype="multipart/form-data" class="p-6 py-1 space-y-4">
-            @csrf
-            
-            <!-- Nomor Visa -->
-            <div class="space-y-2">
-                <label class="block text-gray-300 text-sm font-medium">Nomor Visa</label>
-                <input type="text" name="nomor_visa" value="{{ $siswa->nomor_visa ?? '' }}" 
-                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-            </div>
-
-            <!-- Tanggal Visa -->
-            <div class="space-y-2">
-                <label class="block text-gray-300 text-sm font-medium">Tanggal Visa</label>
-                <input type="date" name="tanggal_visa" value="{{ $siswa->tanggal_visa ?? '' }}" 
-                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-            </div>
-
-            <!-- Masa Berlaku Visa -->
-            <div class="space-y-2">
-                <label class="block text-gray-300 text-sm font-medium">Masa Berlaku</label>
-                <select name="masa_berlaku_visa" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                    <option value="">Pilih Masa Berlaku</option>
-                    <option value="1_tahun" {{ ($siswa->masa_berlaku_visa ?? '') == '1_tahun' ? 'selected' : '' }}>1 Tahun</option>
-                    <option value="2_tahun" {{ ($siswa->masa_berlaku_visa ?? '') == '2_tahun' ? 'selected' : '' }}>2 Tahun</option>
-                    <option value="3_tahun" {{ ($siswa->masa_berlaku_visa ?? '') == '3_tahun' ? 'selected' : '' }}>3 Tahun</option>
-                    <option value="5_tahun" {{ ($siswa->masa_berlaku_visa ?? '') == '5_tahun' ? 'selected' : '' }}>5 Tahun</option>
-                </select>
-            </div>
-
-            <!-- File Visa -->
-            <div class="space-y-2">
-                <label class="block text-gray-300 text-sm font-medium">File Visa (PDF/Image)</label>
-                <input type="file" name="dokumen_visa" accept=".pdf,.jpg,.jpeg,.png" required
-                       class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-indigo-600 file:text-white hover:file:bg-indigo-700">
-            </div>
-
-            <!-- Submit Button -->
-            <div class="flex justify-end gap-3 pt-4">
-                <button type="button" onclick="closeVisaModal()"
-                        class="px-6 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300 text-sm font-medium">
-                    Batal
-                </button>
-                <button type="submit"
-                        class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-lg transition-all duration-300 text-sm font-medium flex items-center gap-2">
-                    <iconify-icon icon="mdi:cloud-upload" width="16" height="16"></iconify-icon>
-                    Upload
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
 <!-- Scripts -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
@@ -2365,7 +1924,6 @@
         background-color: #2563EB;
         color: white;
     }
-        /* Tooltip untuk tab yang terkunci */
         /* Tooltip untuk tab yang terkunci */
     .tab-btn[data-unlocked="0"] {
         position: relative;
@@ -2842,52 +2400,6 @@
     });
 </script>
 
-            
-<script>
-    // Modal functions untuk COE
-    function openCoeModal() {
-        document.getElementById('modalCoe').classList.remove('hidden');
-        document.getElementById('modalCoe').classList.add('flex');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function closeCoeModal() {
-        document.getElementById('modalCoe').classList.add('hidden');
-        document.getElementById('modalCoe').classList.remove('flex');
-        document.body.style.overflow = '';
-    }
-    
-    // Modal functions untuk Visa
-    function openVisaModal() {
-        document.getElementById('modalVisa').classList.remove('hidden');
-        document.getElementById('modalVisa').classList.add('flex');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function closeVisaModal() {
-        document.getElementById('modalVisa').classList.add('hidden');
-        document.getElementById('modalVisa').classList.remove('flex');
-        document.body.style.overflow = '';
-    }
-    
-    // Close modal when clicking outside
-    document.getElementById('modalCoe')?.addEventListener('click', function(e) {
-        if (e.target === this) closeCoeModal();
-    });
-    
-    document.getElementById('modalVisa')?.addEventListener('click', function(e) {
-        if (e.target === this) closeVisaModal();
-    });
-    
-    // Close with ESC key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeCoeModal();
-            closeVisaModal();
-        }
-    });
-</script>
-
 <script>
         // Character counter
     const textarea = document.getElementById('jikoPiaruTextarea');
@@ -2989,33 +2501,6 @@
             }
         });
     }
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const input = document.getElementById("dokumen_paspor");
-    const preview = document.getElementById("preview_paspor");
-
-    input.addEventListener("change", function(e){
-
-        const file = e.target.files[0];
-
-        if(file){
-
-            const reader = new FileReader();
-
-            reader.onload = function(event){
-                preview.src = event.target.result;
-                preview.classList.remove("hidden");
-            }
-
-            reader.readAsDataURL(file);
-        }
-
-    });
-
-});
 </script>
 
 <script>
@@ -3154,46 +2639,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <script>
-    flatpickr("#tgl_pembuatan_paspor_biodata", {
-        dateFormat: "Y-m-d",
-        altFormat: "j F Y",
-        altInput: true,
-        allowInput: true,
-        theme: "dark",
-        locale: {
-            firstDayOfWeek: 1,
-            weekdays: {
-                shorthand: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
-                longhand: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
-            },
-            months: {
-                shorthand: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
-                longhand: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
-            }
-        }
-    });
-
-    flatpickr("#tgl_dikeluarkan_paspor_biodata", {
-        dateFormat: "Y-m-d",
-        altFormat: "j F Y",
-        altInput: true,
-        allowInput: true,
-        theme: "dark",
-        locale: {
-            firstDayOfWeek: 1,
-            weekdays: {
-                shorthand: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
-                longhand: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
-            },
-            months: {
-                shorthand: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
-                longhand: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
-            }
-        }
-    });
-</script>
-
-<script>
         // Notification System
     document.addEventListener('DOMContentLoaded', function() {
         // Auto dismiss notifications after 5 seconds
@@ -3327,15 +2772,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (winScroll / height) * 100;
-        const progressBar = document.getElementById('saveProgressDokumen');
-        if (progressBar) {
-            progressBar.style.width = scrolled + '%';
-        }
-    });
-    window.addEventListener('scroll', function() {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
         const progressBar = document.getElementById('saveProgressSertifikat');
         if (progressBar) {
             progressBar.style.width = scrolled + '%';
@@ -3359,146 +2795,6 @@ document.addEventListener("DOMContentLoaded", function () {
             progressBar.style.width = scrolled + '%';
         }
     });
-
-    // Keyboard shortcut Ctrl+S to submit form
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.key === 's') {
-            e.preventDefault();
-            document.getElementById('biodataForm').submit();
-        }
-    });
-
-    // File upload handling
-    document.getElementById('dokumen')?.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        const fileContainer = document.getElementById('file-name-container');
-        const fileNamePlaceholder = document.getElementById('file-name-placeholder');
-        const selectedFileName = document.getElementById('selected-file-name');
-        const fileSize = document.getElementById('file-size');
-        
-        if (file) {
-            // Format file size
-            let size = file.size;
-            let sizeText = '';
-            if (size < 1024) {
-                sizeText = size + ' bytes';
-            } else if (size < 1024 * 1024) {
-                sizeText = (size / 1024).toFixed(1) + ' KB';
-            } else {
-                sizeText = (size / (1024 * 1024)).toFixed(1) + ' MB';
-            }
-            
-            // Update UI
-            selectedFileName.textContent = file.name;
-            fileSize.textContent = sizeText;
-            fileContainer.classList.remove('hidden');
-            fileNamePlaceholder.textContent = file.name;
-            
-            // Validate file size (max 5MB)
-            if (size > 5 * 1024 * 1024) {
-                alert('Ukuran file terlalu besar! Maksimal 5MB.');
-                this.value = '';
-                fileContainer.classList.add('hidden');
-                fileNamePlaceholder.textContent = 'Belum ada file dipilih';
-            }
-            
-            // Validate file type
-            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-            if (!allowedTypes.includes(file.type)) {
-                alert('Tipe file tidak diizinkan! Gunakan PDF, JPG, atau PNG.');
-                this.value = '';
-                fileContainer.classList.add('hidden');
-                fileNamePlaceholder.textContent = 'Belum ada file dipilih';
-            }
-        }
-    });
-
-    function resetFileInput() {
-        const fileInput = document.getElementById('dokumen');
-        const fileContainer = document.getElementById('file-name-container');
-        const fileNamePlaceholder = document.getElementById('file-name-placeholder');
-        
-        fileInput.value = '';
-        fileContainer.classList.add('hidden');
-        fileNamePlaceholder.textContent = 'Belum ada file dipilih';
-    }
-
-    // Add floating animation to bottom save button on scroll
-    let lastScrollTop = 0;
-    window.addEventListener('scroll', function() {
-        const bottomBtn = document.querySelector('.sticky.bottom-6');
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > lastScrollTop) {
-            // Scrolling down
-            bottomBtn.classList.add('translate-y-0', 'opacity-100');
-            bottomBtn.classList.remove('translate-y-10', 'opacity-0');
-        } else {
-            // Scrolling up
-            if (scrollTop < 100) {
-                bottomBtn.classList.remove('translate-y-0', 'opacity-100');
-                bottomBtn.classList.add('translate-y-10', 'opacity-0');
-            }
-        }
-        lastScrollTop = scrollTop;
-    }, false);
-</script>
-
-<script>
-        // File upload handling
-    document.getElementById('dokumen')?.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        const fileContainer = document.getElementById('file-name-container');
-        const fileNamePlaceholder = document.getElementById('file-name-placeholder');
-        const selectedFileName = document.getElementById('selected-file-name');
-        const fileSize = document.getElementById('file-size');
-        
-        if (file) {
-            // Format file size
-            let size = file.size;
-            let sizeText = '';
-            if (size < 1024) {
-                sizeText = size + ' bytes';
-            } else if (size < 1024 * 1024) {
-                sizeText = (size / 1024).toFixed(1) + ' KB';
-            } else {
-                sizeText = (size / (1024 * 1024)).toFixed(1) + ' MB';
-            }
-            
-            // Update UI
-            selectedFileName.textContent = file.name;
-            fileSize.textContent = sizeText;
-            fileContainer.classList.remove('hidden');
-            fileNamePlaceholder.textContent = file.name;
-            
-            // Optional: Validate file size (max 5MB)
-            if (size > 5 * 1024 * 1024) {
-                alert('Ukuran file terlalu besar! Maksimal 5MB.');
-                this.value = '';
-                fileContainer.classList.add('hidden');
-                fileNamePlaceholder.textContent = 'Belum ada file dipilih';
-            }
-            
-            // Optional: Validate file type
-            const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-            if (!allowedTypes.includes(file.type)) {
-                alert('Tipe file tidak diizinkan! Gunakan PDF, JPG, atau PNG.');
-                this.value = '';
-                fileContainer.classList.add('hidden');
-                fileNamePlaceholder.textContent = 'Belum ada file dipilih';
-            }
-        }
-    });
-
-    function resetFileInput() {
-        const fileInput = document.getElementById('dokumen');
-        const fileContainer = document.getElementById('file-name-container');
-        const fileNamePlaceholder = document.getElementById('file-name-placeholder');
-        
-        fileInput.value = '';
-        fileContainer.classList.add('hidden');
-        fileNamePlaceholder.textContent = 'Belum ada file dipilih';
-    }
 </script>
 
 <script>
@@ -3510,11 +2806,6 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             document.getElementById('field_lpk').style.display = 'none';
         }
-    });
-
-    // File name display
-    document.getElementById('dokumen')?.addEventListener('change', function(e) {
-        document.getElementById('file-name').textContent = e.target.files[0]?.name || '';
     });
 
     // Tab activation
@@ -3588,16 +2879,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // ✅ WAJIB DIPANGGIL: Eksekusi fungsi untuk membuka tabnya
     activateTab(activeTab);
 });
-
-// Paspor Modal Functions
-function openPasporModal(){
-    document.getElementById('pasporModal').classList.remove('hidden');
-    document.getElementById('pasporModal').classList.add('flex');
-}
-
-function closePasporModal(){
-    document.getElementById('pasporModal').classList.add('hidden');
-}
 
 // Keluarga Modal Functions
 function openCreateModal() {
@@ -3865,6 +3146,52 @@ function openEditSertifikatModal(id, nama, terbit, expired, levelJlpt) {
 function closeEditSertifikatModal() {
     document.getElementById('editSertifikatModal').classList.add('hidden');
 }
+
+if (textarea) {
+        textarea.addEventListener('keydown', function(e) {
+            // Cek apakah yang ditekan adalah tombol Enter
+            if (e.key === 'Enter' && !e.shiftKey) { // Shift+Enter tetap diizinkan untuk baris baru paksa
+                
+                // Dapatkan posisi kursor saat ini
+                const cursorPos = this.selectionStart;
+                
+                // Ambil teks dari awal baris sampai posisi kursor
+                const textBeforeCursor = this.value.substring(0, cursorPos);
+                const lastNewLine = textBeforeCursor.lastIndexOf('\n');
+                const currentLine = textBeforeCursor.substring(lastNewLine + 1);
+
+                // Buat elemen bayangan (hidden) untuk mengukur lebar teks
+                const span = document.createElement('span');
+                const computedStyle = window.getComputedStyle(this);
+                
+                // Copy style font dari textarea ke span
+                span.style.font = computedStyle.font;
+                span.style.letterSpacing = computedStyle.letterSpacing;
+                span.style.whiteSpace = 'pre-wrap';
+                span.style.visibility = 'hidden';
+                span.style.position = 'absolute';
+                span.textContent = currentLine;
+                
+                document.body.appendChild(span);
+
+                // Hitung lebar teks dan lebar maksimal textarea (dikurangi padding)
+                const textWidth = span.offsetWidth;
+                const paddingLeft = parseFloat(computedStyle.paddingLeft);
+                const paddingRight = parseFloat(computedStyle.paddingRight);
+                const maxWidth = this.clientWidth - paddingLeft - paddingRight;
+
+                document.body.removeChild(span);
+
+                // Jika teks belum mencapai 90% dari lebar maksimal, blokir Enter
+                if (textWidth < maxWidth * 0.9) {
+                    e.preventDefault();
+                    if (typeof showNotification === 'function') {
+                        showNotification('Teks belum mencapai ujung baris. Terus ketik', 'error');
+                    }
+                }
+            }
+        });
+    }
 
 // Select2 and Flatpickr Initialization
 $(document).ready(function() {

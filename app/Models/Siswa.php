@@ -48,6 +48,8 @@ class Siswa extends Model
     protected $casts = [
         'tanggal_pembuatan_paspor' => 'date',
         'tanggal_keluar_paspor' => 'date',
+        'tanggal_coe' => 'date',
+        'tanggal_visa' => 'date',
     ];
 
     // 🔥 Hitung usia otomatis

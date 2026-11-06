@@ -377,25 +377,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </button>
                                 </form>
 
-                                <!-- Di bagian button edit, ubah data-tanggal -->
-                                <button 
-                                    onclick="openEditModal(this)"
-                                    data-id="{{ $siswa->id }}"
-                                    data-nama="{{ $siswa->nama_lengkap }}"
-                                    data-email="{{ $siswa->user?->email ?? '' }}"
-                                    data-katakana="{{ $siswa->nama_lengkap_katakana ?? '' }}"
-                                    data-panggilan="{{ $siswa->nama_panggilan ?? '' }}"
-                                    data-panggilan-katakana="{{ $siswa->nama_panggilan_katakana ?? '' }}"
-                                    data-tempat="{{ $siswa->tempat_lahir }}"
-                                    data-tanggal="{{ $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->format('d/m/Y') : '' }}"
-                                    data-jk="{{ $siswa->jenis_kelamin }}"
-                                    data-agama="{{ $siswa->agama }}"
-                                    data-hp="{{ $siswa->no_hp ?? '' }}"
-                                    data-alamat="{{ $siswa->alamat ?? '' }}"
-                                    class="bg-yellow-600/20 hover:bg-yellow-600/40 text-yellow-400 p-2 rounded-lg transition-all duration-300 group"
-                                    title="Edit">
-                                    <iconify-icon icon="mdi:pencil" width="16" height="16" class="group-hover:scale-110 transition-transform"></iconify-icon>
-                                </button>
+                                <!-- Tombol Lihat Detail -->
+                                <a href="{{ route('siswa.show', $siswa->id) }}" 
+                                class="bg-teal-600/20 hover:bg-teal-600/40 text-teal-400 p-2 rounded-lg transition-all duration-300 group"
+                                title="Lihat Detail">
+                                    <iconify-icon icon="mdi:eye" width="16" height="16" class="group-hover:scale-110 transition-transform"></iconify-icon>
+                                </a>
 
                                 <!-- Delete -->
                                 <form action="{{ route('siswa.destroy', $siswa->id) }}" method="POST" 
@@ -547,25 +534,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         </button>
                     </form>
 
-                    <!-- Edit -->
-                    <!-- Di bagian button edit, ubah data-tanggal -->
-                    <button 
-                        onclick="openEditModal(this)"
-                        data-id="{{ $siswa->id }}"
-                        data-nama="{{ $siswa->nama_lengkap }}"
-                        data-katakana="{{ $siswa->nama_lengkap_katakana ?? '' }}"
-                        data-panggilan="{{ $siswa->nama_panggilan ?? '' }}"
-                        data-panggilan-katakana="{{ $siswa->nama_panggilan_katakana ?? '' }}"
-                        data-tempat="{{ $siswa->tempat_lahir }}"
-                        data-tanggal="{{ $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->format('Y-m-d') : '' }}"
-                        data-jk="{{ $siswa->jenis_kelamin }}"
-                        data-agama="{{ $siswa->agama }}"
-                        data-hp="{{ $siswa->no_hp ?? '' }}"
-                        data-alamat="{{ $siswa->alamat ?? '' }}"
-                        class="bg-yellow-600/20 hover:bg-yellow-600/40 text-yellow-400 p-2 rounded-lg transition-all duration-300 group"
-                        title="Edit">
-                        <iconify-icon icon="mdi:pencil" width="16" height="16" class="group-hover:scale-110 transition-transform"></iconify-icon>
-                    </button>
+                    <!-- Show -->
+                    <a href="{{ route('siswa.show', $siswa->id) }}" 
+                    class="w-full flex items-center justify-center gap-1 bg-teal-600/20 hover:bg-teal-600/40 text-teal-400 px-2 py-2 rounded-lg transition-all duration-300 text-xs">
+                        <iconify-icon icon="mdi:eye" width="14" height="14"></iconify-icon>
+                        <span>Detail</span>
+                    </a>
 
                     <!-- Delete -->
                     <form action="{{ route('siswa.destroy', $siswa->id) }}" method="POST" 

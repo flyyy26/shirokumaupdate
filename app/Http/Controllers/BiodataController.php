@@ -177,19 +177,6 @@ class BiodataController extends Controller
             'dokumen'                  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
 
-        // JIKA yang disubmit adalah form dari tab DOKUMEN, wajibkan isi paspor
-        // JIKA dari tab BIODATA, jangan wajibkan paspor (karena formnya tidak ada di sana)
-        if ($activeTab === 'dokumen') {
-            $rules['nomor_paspor'] = 'required|string|max:255';
-            $rules['tanggal_pembuatan_paspor'] = 'required|date';
-            $rules['tanggal_paspor_dikeluarkan'] = 'required|date';
-        } else {
-            // Opsional jika dari tab biodata, agar tidak error
-            $rules['nomor_paspor'] = 'nullable|string|max:255';
-            $rules['tanggal_pembuatan_paspor'] = 'nullable|date';
-            $rules['tanggal_paspor_dikeluarkan'] = 'nullable|date';
-        }
-
         $validated = $request->validate($rules);
     
         // --- PROSES HOBI (Array to JSON) ---
@@ -403,5 +390,26 @@ class BiodataController extends Controller
             ]);
         
         return $pdf->stream('CV_Jepang_' . str_replace(' ', '_', $siswa->nama_lengkap) . '.pdf');
+    }
+
+        public function updatePasporAdmin(Request $request, Siswa $siswa)
+    {
+        $biodata = BiodataSiswa::firstOrCreate(['siswa_id' => $siswa->id]);
+
+        $validated = $request->validate([
+            'nomor_paspor' => 'required|string|max:255',
+            'tanggal_pembuatan_paspor' => 'required|date',
+            'tanggal_paspor_dikeluarkan' => 'required|date',
+        ]);
+
+        $biodata->update($validated);
+
+        if (class_exists('App\Helpers\LogHelper')) {
+            LogHelper::log('Update Paspor Admin', 'Memperbarui data paspor siswa: ' . $siswa->nama_lengkap);
+        }
+
+        return back()
+            ->with('success', 'Data paspor berhasil diperbarui.')
+            ->with('active_tab', 'admin-dokumen');
     }
 }

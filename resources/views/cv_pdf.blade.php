@@ -396,59 +396,29 @@
         </tr>
     </table>
 
-    <table style="width: 100%; margin-bottom:5px;">
-        <tr>
-            <td style="width: 100%; vertical-align: center;">
-                <table class="info-table">
-                    <tr>
-                        <td class="heading-cell" style="width:14%;">番号 </td>
-                        <td class="heading-cell" style="width:23%;">{{ $urutanSiswa }}</td>
-                        <td class="heading-cell" style="width:63%;">
-                            @php
-                                $valueRaw = $job->jenis_ginou ?? '';
-                                $tampilanJepang = $mappingGinou[$valueRaw] ?? $valueRaw;
-                            @endphp
-                            {{ $tampilanJepang }}
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-
     <table class="header-container" style="padding-right:2px; margin-bottom: 6px;">
         <tr>
-            <td style="width: 77%; vertical-align: top; padding-right: 7px;">
+            <td style="width: 80%; vertical-align: top; padding-right: 7px;">
                 <table class="info-table" style="table-layout: fixed;">
                     <tr>
-                        <td class="biodata-cell-heading" rowspan="9" style="width: 18.5%;">本人</td>
-                        <td class="bg-grey text-center" rowspan="3" style="width: 15%;">氏名</td>
-                        <td class="bg-grey text-center" style="width: 15%;">カタカナ</td>
-                        <td class="biodata-cell" colspan="5" style="width: 65%;">{{ $siswa->nama_lengkap_katakana ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="bg-grey text-center">ローマ字</td>
-                        <td class="biodata-cell" colspan="5" style="font-weight: bold;">{{ $siswa->nama_lengkap ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="bg-grey text-center">呼び名</td>
-                        <td class="biodata-cell" colspan="5">{{ $siswa->nama_panggilan_katakana ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="bg-grey text-center">生年月日</td>
-                        <td class="biodata-cell" colspan="2">{{ $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->format('Y年 m月 d日') : '-' }}</td>
-                        <td class="bg-grey text-center" style="width: 10%;">年齢</td>
-                        <td class="biodata-cell" style="width: 10%;">{{ $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->age : '-' }}</td>
-                        <td class="bg-grey text-center" style="width: 10%;">性別</td>
+                        <td class="bg-grey text-center">氏名</td>
+                        <td class="biodata-cell" colspan="4" style="font-weight: bold;">{{ $siswa->nama_lengkap ?? '-' }}</td>
+                        <td class="bg-grey text-center" style="width: 10%;">性別 <br/> Jenis Kelamin</td>
                         <td class="biodata-cell" style="width: 15%;">{{ isset($siswa->jenis_kelamin) ? ($siswa->jenis_kelamin == 'L' ? '男' : '女') : '-' }}</td>
                     </tr>
                     <tr>
-                        <td class="bg-grey text-center">現住所</td>
-                        <td class="biodata-cell" colspan="6" style="font-size: 9px; text-align: center !important; text-transform:uppercase; padding:5px 60px; line-height:1;">
-                            {{ $siswa->alamat ?? '-' }}
-                        </td>
+                        <td class="bg-grey text-center" style="width: 15%;">カタカナ</td>
+                        <td class="biodata-cell" colspan="4" style="width: 65%;">{{ $siswa->nama_lengkap_katakana ?? '-' }}</td>
+                        <td class="bg-grey text-center" style="width: 10%;">年齢 <br/> Umur</td>
+                        <td class="biodata-cell" style="width: 10%;">{{ $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->age : '-' }}</td>
                     </tr>
                     <tr>
+                        <td class="bg-grey text-center">生年月日 <br/> Tanggal Lahir</td>
+                        <td class="biodata-cell" colspan="2">{{ $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->format('Y年 m月 d日') : '-' }}</td>
+                        <td class="bg-grey text-center" colspan="1">宗教</td>
+                        <td class="biodata-cell" colspan="1">
+                            {{ $agamaJepang[$siswa->agama] ?? ($siswa->agama ?? '-') }}
+                        </td>
                         <td class="bg-grey text-center">婚姻状況</td>
                         <td class="biodata-cell">
                             @if($biodata && $biodata->status_perkawinan)
@@ -457,6 +427,15 @@
                                 -
                             @endif
                         </td>
+                    </tr>
+                    <tr>
+                        <td class="bg-grey text-center">現住所</td>
+                        <td class="biodata-cell" colspan="6" style="font-size: 9px; text-align: center !important; text-transform:uppercase; padding:5px 60px; line-height:1;">
+                            {{ $siswa->alamat ?? '-' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        
                         <td class="bg-grey text-center">裸眼</td>
                         <td class="bg-grey text-center">左</td>
                         <td class="biodata-cell">{{ $biodata->kondisi_mata_kiri ?? '-' }}</td>
@@ -486,19 +465,16 @@
                             @endphp
                             {{ $mapJepang[$tanganDominan] ?? $tanganDominan }}
                         </td>
-                        <td class="bg-grey text-center" colspan="2">宗教</td>
-                        <td class="biodata-cell" colspan="3">
-                            {{ $agamaJepang[$siswa->agama] ?? ($siswa->agama ?? '-') }}
-                        </td>
+                        
                     </tr>
                 </table>
             </td>
 
-            <td style="width: 23%; vertical-align: center;">
+            <td style="width: 20%; vertical-align: center;">
                 @if(!empty($fotoBase64))
                     <div style="
                         width: 100%;
-                        height: 258px;
+                        height: 150px;
                         background-image: url('{{ $fotoBase64 }}');
                         background-size: cover;
                         background-position: center;
@@ -507,7 +483,7 @@
                     ">
                     </div>
                 @else
-                    <div style="width: 100%; height: 254px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; color: #ccc;">FOTO 3x4</div>
+                    <div style="width: 100%; height: 150px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; color: #ccc;">FOTO 3x4</div>
                 @endif
             </td>
         </tr>
@@ -518,7 +494,6 @@
             <td style="width: 100%; vertical-align: top;">
                 <table class="info-table" style="table-layout: fixed;">
                     <tr>
-                        <td class="biodata-cell-heading" rowspan="{{ max(1, $siswa->pendidikans->count()) + 1 }}" style="width: 14%;">学歴</td>
                         <td class="bg-grey text-center" style="width:25%;">期間 </td>
                         <td class="bg-grey text-center" style="width:45%;">学校名</td>
                         <td class="bg-grey text-center" style="width:16%;">学部・専攻</td>
@@ -567,7 +542,6 @@
                         </tr>
                     @endforelse
                     <tr>
-                        <td class="biodata-cell-heading" style="width:25%;">日本語学校</td>
                         <td class="bg-grey text-center" style="width:25%;">
                             @php
                                 $periodeRaw = $biodata->periode_mulai ?? '-';
